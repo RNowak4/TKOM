@@ -1,0 +1,5 @@
+rootProject.name = 'tkom'
+include 'interfaces'
+include 'implementations'
+include 'tests'
+
