@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LexerImpl implements Lexer {
+    private char tokenChar;
     private InputStream inputStream;
 
     public LexerImpl(InputStream inputStream) {
@@ -49,13 +50,17 @@ public class LexerImpl implements Lexer {
         return false;
     }
 
+    private boolean isNextOperatorChar(final char firstChar, final char secondChar) {
+        return (secondChar == '=') && (firstChar == '<' || firstChar == '>' || firstChar == '=' || firstChar == '!');
+    }
+
     @Override
     public Token nextToken() {
         final StringBuilder stringBuilder = new StringBuilder();
 
-        char tokenChar = 0;
-        while (!isStreamEnd() && isSpace(tokenChar = nextChar()))
-            ;
+        if (tokenChar == 0 || isSpace(tokenChar))
+            while (!isStreamEnd() && isSpace(tokenChar = nextChar()))
+                ;
 
         stringBuilder.append(tokenChar);
         if (isDigit(tokenChar)) {
@@ -86,7 +91,7 @@ public class LexerImpl implements Lexer {
             else
                 return new TokenImpl(string, TokenType.ID);
         } else {
-            while (!isStreamEnd() && !isLiteral(tokenChar = nextChar()) && !isDigit(tokenChar)) {
+            if (!isStreamEnd() && isNextOperatorChar(tokenChar, (tokenChar = nextChar()))) {
                 stringBuilder.append(tokenChar);
             }
 

@@ -35,6 +35,6 @@ public class PredefinedTokens {
         operators.put(";", TokenType.COLON);
         operators.put(".", TokenType.DOT);
         operators.put(";", TokenType.SEMICOLON);
-
+        operators.put("=", TokenType.ASSIGN);
     }
 }

@@ -76,4 +76,53 @@ public class LexerTest {
         Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
         Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.UNDEFINED);
     }
+
+    @Test
+    public void complexTokenTest() {
+        final String tokens = "aaaaa;123+j;";
+
+        final InputStream inputStream = getInputStream(tokens);
+        final Lexer lexer = new LexerImpl(inputStream);
+
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DIGIT);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ADD);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DIGIT);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+    }
+
+    @Test
+    public void complexTokenTest2() {
+        final String firstLine = "def a = 123 + 10j;";
+        final String secondLine = "def b = 11 - j;";
+        final String thirdLine = "return a%b;;";
+
+        final String inputString = createInputString(firstLine, secondLine, thirdLine);
+        final InputStream inputStream = getInputStream(inputString);
+        final Lexer lexer = new LexerImpl(inputStream);
+
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DEF);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ASSIGN);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DIGIT);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ADD);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DIGIT);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DEF);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ASSIGN);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DIGIT);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SUB);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DIGIT);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.RETURN);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.MODULO);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+    }
 }

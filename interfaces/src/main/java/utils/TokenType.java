@@ -29,5 +29,6 @@ public enum TokenType {
     COLON,
     DOT,
     SEMICOLON,
+    ASSIGN,
     UNDEFINED
 }
