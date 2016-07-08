@@ -20,7 +20,7 @@ public class PredefinedTokens {
         operators.put(">", TokenType.GREATER);
         operators.put(">=", TokenType.GREATER_EQUALS);
         operators.put("(", TokenType.PARENTH_OPEN);
-        operators.put("(", TokenType.PARENTH_CLOSE);
+        operators.put(")", TokenType.PARENTH_CLOSE);
         operators.put("[", TokenType.SQUARE_BRACKET_OPEN);
         operators.put("]", TokenType.SQUARE_BRACKET_CLOSE);
         operators.put("{", TokenType.BRACKET_OPEN);

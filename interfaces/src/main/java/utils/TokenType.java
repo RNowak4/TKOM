@@ -1,7 +1,7 @@
 package utils;
 
 public enum TokenType {
-    DIGIT,
+    NUMBER,
     FUNCTION,
     IF,
     WHILE,

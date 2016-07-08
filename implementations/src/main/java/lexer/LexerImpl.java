@@ -75,7 +75,7 @@ public class LexerImpl implements Lexer {
             if (isLiteral(tokenChar))
                 return new TokenImpl(stringBuilder.toString(), TokenType.UNDEFINED);
             else
-                return new TokenImpl(stringBuilder.toString(), TokenType.DIGIT);
+                return new TokenImpl(stringBuilder.toString(), TokenType.NUMBER);
         } else if (isLiteral(tokenChar)) {
             while (!isStreamEnd() && isLiteral(tokenChar = nextChar()) || isDigit(tokenChar)) {
                 stringBuilder.append(tokenChar);
@@ -87,21 +87,24 @@ public class LexerImpl implements Lexer {
             if (keywordToken != null)
                 return new TokenImpl(string, keywordToken);
             else if (string.equals("j"))
-                return new TokenImpl(string, TokenType.DIGIT);
+                return new TokenImpl(string, TokenType.NUMBER);
             else
                 return new TokenImpl(string, TokenType.ID);
         } else {
             if (!isStreamEnd() && isNextOperatorChar(tokenChar, (tokenChar = nextChar()))) {
                 stringBuilder.append(tokenChar);
+                if (!isStreamEnd())
+                    tokenChar = nextChar();
             }
 
             final String tokenString = stringBuilder.toString().toLowerCase();
             final TokenType operatorTokenType = PredefinedTokens.operators.get(tokenString);
 
-            if (operatorTokenType != null)
+            if (operatorTokenType != null) {
                 return new TokenImpl(tokenString, operatorTokenType);
-            else
+            } else {
                 return new TokenImpl(tokenString, TokenType.UNDEFINED);
+            }
         }
     }
 }
