@@ -29,7 +29,7 @@ public class LexerTest {
     public void keywordTokenTest() {
         for (String keyword : PredefinedTokens.keywords.keySet()) {
             Lexer lexer = new LexerImpl(getInputStream(keyword));
-            Assert.assertTrue(PredefinedTokens.keywords.get(keyword) == lexer.nextToken().getTokenType());
+            Assert.assertEquals(PredefinedTokens.keywords.get(keyword), lexer.nextToken().getTokenType());
         }
     }
 
@@ -37,7 +37,7 @@ public class LexerTest {
     public void operatorTokenTest() {
         for (String keyword : PredefinedTokens.operators.keySet()) {
             Lexer lexer = new LexerImpl(getInputStream(keyword));
-            Assert.assertTrue(PredefinedTokens.operators.get(keyword) == lexer.nextToken().getTokenType());
+            Assert.assertEquals(PredefinedTokens.operators.get(keyword), lexer.nextToken().getTokenType());
         }
     }
 
@@ -61,9 +61,9 @@ public class LexerTest {
         final InputStream inputStream = getInputStream(createInputString(goodName1, goodName2, badName1));
         final Lexer lexer = new LexerImpl(inputStream);
 
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.UNDEFINED);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.UNDEFINED);
     }
 
     @Test
@@ -112,28 +112,28 @@ public class LexerTest {
         final InputStream inputStream = getInputStream(inputString);
         final Lexer lexer = new LexerImpl(inputStream);
 
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DEF);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ASSIGN);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ADD);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.DEF);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ASSIGN);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ADD);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
 
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.DEF);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ASSIGN);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SUB);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.DEF);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ASSIGN);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SUB);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
 
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.RETURN);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.MODULO);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.RETURN);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.MODULO);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
+        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
     }
 
     @Test
