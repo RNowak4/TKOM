@@ -8,6 +8,9 @@ public class Function {
     private StatementBlock statementBlock;
     private List<String> parameters = new ArrayList<>();
 
+    public Function() {
+    }
+
     public Function(String name, StatementBlock statementBlock) {
         this.name = name;
         this.statementBlock = statementBlock;

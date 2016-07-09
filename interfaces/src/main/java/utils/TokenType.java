@@ -30,5 +30,6 @@ public enum TokenType {
     DOT,
     SEMICOLON,
     ASSIGN,
-    UNDEFINED
+    UNDEFINED,
+    END
 }
