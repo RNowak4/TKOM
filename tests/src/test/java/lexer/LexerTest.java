@@ -21,7 +21,7 @@ public class LexerTest {
         final Lexer lexer = new LexerImpl(inputStream);
 
         for (TokenType tokenType : tokenTypes) {
-            Assert.assertTrue(lexer.nextToken().getTokenType() == tokenType);
+            Assert.assertEquals(tokenType, lexer.nextToken().getTokenType());
         }
     }
 
@@ -53,90 +53,6 @@ public class LexerTest {
     }
 
     @Test
-    public void idTokenTest() {
-        final String goodName1 = "abc";
-        final String goodName2 = "A232BBasd";
-        final String badName1 = "1adas";
-
-        final InputStream inputStream = getInputStream(createInputString(goodName1, goodName2, badName1));
-        final Lexer lexer = new LexerImpl(inputStream);
-
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.UNDEFINED);
-    }
-
-    @Test
-    public void digitTokenTest() {
-        final String goodDigit1 = "123";
-        final String goodDigit2 = "j";
-        final String goodDigit3 = "123j";
-        final String badDigit1 = "a123";
-        final String badDigit2 = "ja";
-        final String badDigit3 = "123ja";
-
-        final String inputString = createInputString(goodDigit1, goodDigit2, goodDigit3, badDigit1, badDigit2, badDigit3);
-        final InputStream inputStream = getInputStream(inputString);
-        final Lexer lexer = new LexerImpl(inputStream);
-
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.UNDEFINED);
-    }
-
-    @Test
-    public void complexTokenTest() {
-        final String tokens = "aaaaa;123+j;";
-
-        final InputStream inputStream = getInputStream(tokens);
-        final Lexer lexer = new LexerImpl(inputStream);
-
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ID);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.ADD);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.NUMBER);
-        Assert.assertTrue(lexer.nextToken().getTokenType() == TokenType.SEMICOLON);
-    }
-
-    @Test
-    public void complexTokenTest2() {
-        final String firstLine = "def a = 123 + 10j;";
-        final String secondLine = "def b = 11 - j;";
-        final String thirdLine = "return a%b;;";
-
-        final String inputString = createInputString(firstLine, secondLine, thirdLine);
-        final InputStream inputStream = getInputStream(inputString);
-        final Lexer lexer = new LexerImpl(inputStream);
-
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.DEF);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ASSIGN);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ADD);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
-
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.DEF);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ASSIGN);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SUB);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.NUMBER);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
-
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.RETURN);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.MODULO);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.ID);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
-        Assert.assertEquals(lexer.nextToken().getTokenType(), TokenType.SEMICOLON);
-    }
-
-    @Test
     public void equalsTest() {
         final String testString = "a==b";
 
@@ -161,21 +77,21 @@ public class LexerTest {
     public void simpleNumberTest() {
         final String testString = "123";
 
-        assertLexer(testString, TokenType.NUMBER);
+        assertLexer(testString, TokenType.RE_NUMBER);
     }
 
     @Test
     public void simpleNumberTest2() {
         final String testString = "123j";
 
-        assertLexer(testString, TokenType.NUMBER);
+        assertLexer(testString, TokenType.IM_NUMBER);
     }
 
     @Test
     public void simpleNumberTest3() {
         final String testString = "j";
 
-        assertLexer(testString, TokenType.NUMBER);
+        assertLexer(testString, TokenType.IM_NUMBER);
     }
 
     @Test
@@ -193,4 +109,35 @@ public class LexerTest {
 
         assertLexer(testString, TokenType.UNDEFINED);
     }
+
+    @Test
+    public void endTokenTest() {
+        final String testString = "";
+
+        assertLexer(testString, TokenType.END);
+    }
+
+    @Test
+    public void endTokenTest2() {
+        final String testString = "1";
+
+        assertLexer(testString, TokenType.RE_NUMBER, TokenType.END);
+    }
+
+    @Test
+    public void complexTest1() {
+        final String testString = "def a = 123 + 10j;";
+
+        assertLexer(testString, TokenType.DEF, TokenType.ID, TokenType.ASSIGN, TokenType.RE_NUMBER,
+                TokenType.ADD, TokenType.IM_NUMBER, TokenType.SEMICOLON);
+    }
+
+    @Test
+    public void complexTest2() {
+        final String testString = "return a%b;;";
+
+        assertLexer(testString, TokenType.RETURN, TokenType.ID, TokenType.MODULO, TokenType.ID,
+                TokenType.SEMICOLON, TokenType.SEMICOLON, TokenType.END);
+    }
+
 }

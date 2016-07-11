@@ -2,7 +2,7 @@ package utils;
 
 public class TokenImpl implements Token {
     private String tokenString;
-    private TokenType tokenType;
+    private TokenType tokenType = TokenType.UNDEFINED;
 
     public TokenImpl(String tokenString, TokenType tokenType) {
         this.tokenString = tokenString.toLowerCase();

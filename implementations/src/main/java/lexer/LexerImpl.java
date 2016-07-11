@@ -2,7 +2,7 @@ package lexer;
 
 import utils.PredefinedTokens;
 import utils.Token;
-import utils.TokenImpl;
+import utils.TokenFactory;
 import utils.TokenType;
 
 import java.io.IOException;
@@ -10,6 +10,8 @@ import java.io.InputStream;
 
 public class LexerImpl implements Lexer {
     private char tokenChar;
+    private int lineCounter = 1;
+    private int charCounter = 1;
     private InputStream inputStream;
 
     public LexerImpl(InputStream inputStream) {
@@ -17,18 +19,23 @@ public class LexerImpl implements Lexer {
     }
 
     private char nextChar() {
-        char nextChar = 0;
+        if (isStreamEnd())
+            return 0;
+        else
+            try {
+                return (char) inputStream.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            nextChar = (char) inputStream.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return nextChar;
+        return 0;
     }
 
     private boolean isSpace(final char c) {
+        if (c == '\n') {
+            charCounter = 1;
+            ++lineCounter;
+        }
         return c == ' ' || c == '\t' || c == '\n';
     }
 
@@ -51,60 +58,94 @@ public class LexerImpl implements Lexer {
     }
 
     private boolean isNextOperatorChar(final char firstChar, final char secondChar) {
-        return (secondChar == '=') && (firstChar == '<' || firstChar == '>' || firstChar == '=' || firstChar == '!');
+        return ((secondChar == '=') && (firstChar == '<' || firstChar == '>' || firstChar == '=' || firstChar == '!'))
+                || (secondChar == '&' && firstChar == '&') || (secondChar == '|' && firstChar == '|');
+    }
+
+    @Override
+    public int getCharPosition() {
+        return charCounter;
+    }
+
+    @Override
+    public int getLine() {
+        return lineCounter;
     }
 
     @Override
     public Token nextToken() {
-        final StringBuilder stringBuilder = new StringBuilder();
+        if (isStreamEnd() && tokenChar == 0)
+            return TokenFactory.getToken(TokenType.END);
 
         if (tokenChar == 0 || isSpace(tokenChar))
-            while (!isStreamEnd() && isSpace(tokenChar = nextChar()))
+            while (isSpace(tokenChar = nextChar()))
                 ;
 
-        stringBuilder.append(tokenChar);
-        if (isDigit(tokenChar)) {
-            while (!isStreamEnd() && isDigit(tokenChar = nextChar()))
-                stringBuilder.append(tokenChar);
-
-            if (tokenChar == 'j') {
-                stringBuilder.append(tokenChar);
-                tokenChar = nextChar();
-            }
-
-            if (isLiteral(tokenChar))
-                return new TokenImpl(stringBuilder.toString(), TokenType.UNDEFINED);
-            else
-                return new TokenImpl(stringBuilder.toString(), TokenType.NUMBER);
-        } else if (isLiteral(tokenChar)) {
-            while (!isStreamEnd() && isLiteral(tokenChar = nextChar()) || isDigit(tokenChar)) {
-                stringBuilder.append(tokenChar);
-            }
-
-            final String string = stringBuilder.toString().toLowerCase();
-            final TokenType keywordToken = PredefinedTokens.keywords.get(string);
-
-            if (keywordToken != null)
-                return new TokenImpl(string, keywordToken);
-            else if (string.equals("j"))
-                return new TokenImpl(string, TokenType.NUMBER);
-            else
-                return new TokenImpl(string, TokenType.ID);
-        } else {
-            if (!isStreamEnd() && isNextOperatorChar(tokenChar, (tokenChar = nextChar()))) {
-                stringBuilder.append(tokenChar);
-                if (!isStreamEnd())
-                    tokenChar = nextChar();
-            }
-
-            final String tokenString = stringBuilder.toString().toLowerCase();
-            final TokenType operatorTokenType = PredefinedTokens.operators.get(tokenString);
-
-            if (operatorTokenType != null) {
-                return new TokenImpl(tokenString, operatorTokenType);
-            } else {
-                return new TokenImpl(tokenString, TokenType.UNDEFINED);
-            }
-        }
+        if (isDigit(tokenChar))
+            return processNumber();
+        else if (isLiteral(tokenChar))
+            return processIdOrNumber();
+        else
+            return processOperator();
     }
+
+    private Token processOperator() {
+        StringBuilder stringBuilder = new StringBuilder()
+                .append(tokenChar);
+
+        if (isNextOperatorChar(tokenChar, (tokenChar = nextChar()))) {
+            stringBuilder.append(tokenChar);
+            if (!isStreamEnd())
+                tokenChar = nextChar();
+        }
+
+        final String tokenString = stringBuilder.toString().toLowerCase();
+        final TokenType operatorTokenType = PredefinedTokens.operators.get(tokenString);
+
+        if (operatorTokenType != null)
+            return TokenFactory.getToken(tokenString, operatorTokenType);
+        else
+            return TokenFactory.getToken(tokenString);
+    }
+
+    private Token processIdOrNumber() {
+        StringBuilder stringBuilder = new StringBuilder()
+                .append(tokenChar);
+
+        while (isLiteral(tokenChar = nextChar()) || isDigit(tokenChar)) {
+            stringBuilder.append(tokenChar);
+        }
+
+        final String string = stringBuilder.toString().toLowerCase();
+        final TokenType keywordToken = PredefinedTokens.keywords.get(string);
+
+        if (keywordToken != null)
+            return TokenFactory.getToken(string, keywordToken);
+        else if (string.equals("j"))
+            return TokenFactory.getToken(string, TokenType.IM_NUMBER);
+        else
+            return TokenFactory.getToken(string, TokenType.ID);
+    }
+
+    private Token processNumber() {
+        StringBuilder stringBuilder = new StringBuilder()
+                .append(tokenChar);
+
+        while (isDigit(tokenChar = nextChar()))
+            stringBuilder.append(tokenChar);
+
+        if (tokenChar == 'j') {
+            stringBuilder.append(tokenChar);
+            tokenChar = nextChar();
+        }
+
+        final String string = stringBuilder.toString();
+        if (isLiteral(tokenChar))
+            return TokenFactory.getToken(string);
+        else if (string.contains("j"))
+            return TokenFactory.getToken(string, TokenType.IM_NUMBER);
+        else
+            return TokenFactory.getToken(string, TokenType.RE_NUMBER);
+    }
+
 }

@@ -1,7 +1,9 @@
 package utils;
 
 public enum TokenType {
-    NUMBER,
+    UNDEFINED,
+    RE_NUMBER,
+    IM_NUMBER,
     FUNCTION,
     IF,
     WHILE,
@@ -30,5 +32,9 @@ public enum TokenType {
     DOT,
     SEMICOLON,
     ASSIGN,
-    UNDEFINED
+    END,
+    COMMA,
+    AND,
+    OR,
+    UNARY
 }
