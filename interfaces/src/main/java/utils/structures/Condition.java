@@ -26,8 +26,37 @@ public class Condition extends Node {
         operands.add(operand);
     }
 
+    public TokenType getOperator() {
+        return operator;
+    }
+
     @Override
     public Type getType() {
         return Type.Condition;
+    }
+
+    public boolean isNegated() {
+        return negated;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Condition condition = (Condition) o;
+
+        if (negated != condition.negated) return false;
+        if (operator != condition.operator) return false;
+        return !(operands != null ? !operands.equals(condition.operands) : condition.operands != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (negated ? 1 : 0);
+        result = 31 * result + (operator != null ? operator.hashCode() : 0);
+        result = 31 * result + (operands != null ? operands.hashCode() : 0);
+        return result;
     }
 }

@@ -28,7 +28,28 @@ public class Function {
         return statementBlock;
     }
 
+    public void setParameters(List<String> parameters) {
+        this.parameters = parameters;
+    }
+
     public void setStatementBlock(StatementBlock statementBlock) {
         this.statementBlock = statementBlock;
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder()
+                .append(name)
+                .append("(");
+
+        parameters.stream().forEach(param -> {
+            sb.append(param);
+            sb.append(",");
+        });
+
+        sb.append(")");
+
+        return sb.toString();
     }
 }

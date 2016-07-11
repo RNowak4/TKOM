@@ -11,6 +11,22 @@ public class FunctionCall extends Node {
         this.name = name;
     }
 
+    public FunctionCall(String name, List<Node> arguments) {
+        this.name = name;
+        this.arguments = arguments;
+    }
+
+    public FunctionCall() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setArguments(List<Node> arguments) {
+        this.arguments = arguments;
+    }
+
     public String getName() {
         return name;
     }

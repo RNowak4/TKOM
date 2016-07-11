@@ -77,21 +77,21 @@ public class LexerTest {
     public void simpleNumberTest() {
         final String testString = "123";
 
-        assertLexer(testString, TokenType.NUMBER);
+        assertLexer(testString, TokenType.RE_NUMBER);
     }
 
     @Test
     public void simpleNumberTest2() {
         final String testString = "123j";
 
-        assertLexer(testString, TokenType.NUMBER);
+        assertLexer(testString, TokenType.IM_NUMBER);
     }
 
     @Test
     public void simpleNumberTest3() {
         final String testString = "j";
 
-        assertLexer(testString, TokenType.NUMBER);
+        assertLexer(testString, TokenType.IM_NUMBER);
     }
 
     @Test
@@ -121,15 +121,15 @@ public class LexerTest {
     public void endTokenTest2() {
         final String testString = "1";
 
-        assertLexer(testString, TokenType.NUMBER, TokenType.END);
+        assertLexer(testString, TokenType.RE_NUMBER, TokenType.END);
     }
 
     @Test
     public void complexTest1() {
         final String testString = "def a = 123 + 10j;";
 
-        assertLexer(testString, TokenType.DEF, TokenType.ID, TokenType.ASSIGN, TokenType.NUMBER,
-                TokenType.ADD, TokenType.NUMBER, TokenType.SEMICOLON);
+        assertLexer(testString, TokenType.DEF, TokenType.ID, TokenType.ASSIGN, TokenType.RE_NUMBER,
+                TokenType.ADD, TokenType.IM_NUMBER, TokenType.SEMICOLON);
     }
 
     @Test

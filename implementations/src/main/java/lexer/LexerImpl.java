@@ -58,7 +58,8 @@ public class LexerImpl implements Lexer {
     }
 
     private boolean isNextOperatorChar(final char firstChar, final char secondChar) {
-        return (secondChar == '=') && (firstChar == '<' || firstChar == '>' || firstChar == '=' || firstChar == '!');
+        return ((secondChar == '=') && (firstChar == '<' || firstChar == '>' || firstChar == '=' || firstChar == '!'))
+                || (secondChar == '&' && firstChar == '&') || (secondChar == '|' && firstChar == '|');
     }
 
     @Override
@@ -121,7 +122,7 @@ public class LexerImpl implements Lexer {
         if (keywordToken != null)
             return TokenFactory.getToken(string, keywordToken);
         else if (string.equals("j"))
-            return TokenFactory.getToken(string, TokenType.NUMBER);
+            return TokenFactory.getToken(string, TokenType.IM_NUMBER);
         else
             return TokenFactory.getToken(string, TokenType.ID);
     }
@@ -138,10 +139,13 @@ public class LexerImpl implements Lexer {
             tokenChar = nextChar();
         }
 
+        final String string = stringBuilder.toString();
         if (isLiteral(tokenChar))
-            return TokenFactory.getToken(stringBuilder.toString());
+            return TokenFactory.getToken(string);
+        else if (string.contains("j"))
+            return TokenFactory.getToken(string, TokenType.IM_NUMBER);
         else
-            return TokenFactory.getToken(stringBuilder.toString(), TokenType.NUMBER);
+            return TokenFactory.getToken(string, TokenType.RE_NUMBER);
     }
 
 }

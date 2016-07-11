@@ -1,8 +1,6 @@
 package utils.structures;
 
-import com.sun.org.apache.xpath.internal.operations.Variable;
-
-public  class AssignStatement extends  Node {
+public class AssignStatement extends Node {
     private Variable variable;
     private Node value;
 

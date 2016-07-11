@@ -9,9 +9,11 @@ public abstract class Node {
         Expression,
         FunctionCall,
         IfStatement,
+        Literal,
         ReturnStatement,
         StatementBlock,
         Variable,
+        InitStatement,
         WhileStatement
     }
 

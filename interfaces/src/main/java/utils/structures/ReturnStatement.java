@@ -3,6 +3,9 @@ package utils.structures;
 public class ReturnStatement extends Node {
     private Node returnVal;
 
+    public ReturnStatement() {
+    }
+
     public ReturnStatement(Node returnVal) {
         this.returnVal = returnVal;
     }
