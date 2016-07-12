@@ -1,15 +1,13 @@
-package utils.structures;
+package parser.structures;
+
+import parser.Parser;
+import utils.TokenType;
 
 public class WhileStatement extends Node {
-    private Condition condition;
-    private StatementBlock statementBlock;
+    private Condition condition = new Condition();
+    private StatementBlock statementBlock = new StatementBlock();
 
     public WhileStatement() {
-    }
-
-    public WhileStatement(Condition condition, StatementBlock statementBlock) {
-        this.condition = condition;
-        this.statementBlock = statementBlock;
     }
 
     public Condition getCondition() {
@@ -31,5 +29,13 @@ public class WhileStatement extends Node {
     @Override
     public Type getType() {
         return Type.WhileStatement;
+    }
+
+    @Override
+    public void parse(final Parser parser) {
+        parser.accept(TokenType.PARENTH_OPEN);
+        condition.parse(parser);
+        parser.accept(TokenType.PARENTH_CLOSE);
+        statementBlock.parse(parser);
     }
 }

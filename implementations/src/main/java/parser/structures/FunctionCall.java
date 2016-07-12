@@ -1,4 +1,6 @@
-package utils.structures;
+package parser.structures;
+
+import parser.Parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +44,9 @@ public class FunctionCall extends Node {
     @Override
     public Type getType() {
         return Type.FunctionCall;
+    }
+
+    @Override
+    public void parse(final Parser parser) {
     }
 }

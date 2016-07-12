@@ -1,4 +1,4 @@
-package utils.structures;
+package parser.structures;
 
 import java.util.ArrayList;
 import java.util.List;

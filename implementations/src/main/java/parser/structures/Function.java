@@ -1,11 +1,14 @@
-package utils.structures;
+package parser.structures;
+
+import parser.Parser;
+import utils.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Function {
+public class Function extends Node {
     private String name;
-    private StatementBlock statementBlock;
+    private StatementBlock statementBlock = new StatementBlock();
     private List<String> parameters = new ArrayList<>();
 
     public Function() {
@@ -36,6 +39,22 @@ public class Function {
         this.statementBlock = statementBlock;
     }
 
+    @Override
+    public Type getType() {
+        return Type.Function;
+    }
+
+    @Override
+    public void parse(final Parser parser) {
+        log.trace("Started parsing function.");
+        if (parser.accept(TokenType.FUNCTION, TokenType.END).getTokenType() == TokenType.END)
+            return ;
+
+        name = parser.accept(TokenType.ID).getTokenString();
+        parameters = parser.parseParameters();
+        statementBlock.parse(parser);
+        log.trace("Successfully parsed function " + this);
+    }
 
     @Override
     public String toString() {

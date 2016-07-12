@@ -8,13 +8,13 @@ import utils.TokenType;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LexerImpl implements Lexer {
+public class Lexer {
     private char tokenChar;
     private int lineCounter = 1;
     private int charCounter = 1;
     private InputStream inputStream;
 
-    public LexerImpl(InputStream inputStream) {
+    public Lexer(InputStream inputStream) {
         this.inputStream = inputStream;
     }
 
@@ -62,17 +62,14 @@ public class LexerImpl implements Lexer {
                 || (secondChar == '&' && firstChar == '&') || (secondChar == '|' && firstChar == '|');
     }
 
-    @Override
     public int getCharPosition() {
         return charCounter;
     }
 
-    @Override
     public int getLine() {
         return lineCounter;
     }
 
-    @Override
     public Token nextToken() {
         if (isStreamEnd() && tokenChar == 0)
             return TokenFactory.getToken(TokenType.END);

@@ -18,7 +18,7 @@ public class LexerTest {
 
     private void assertLexer(final String string, TokenType... tokenTypes) {
         final InputStream inputStream = getInputStream(string);
-        final Lexer lexer = new LexerImpl(inputStream);
+        final Lexer lexer = new Lexer(inputStream);
 
         for (TokenType tokenType : tokenTypes) {
             Assert.assertEquals(tokenType, lexer.nextToken().getTokenType());
@@ -28,7 +28,7 @@ public class LexerTest {
     @Test
     public void keywordTokenTest() {
         for (String keyword : PredefinedTokens.keywords.keySet()) {
-            Lexer lexer = new LexerImpl(getInputStream(keyword));
+            Lexer lexer = new Lexer(getInputStream(keyword));
             Assert.assertEquals(PredefinedTokens.keywords.get(keyword), lexer.nextToken().getTokenType());
         }
     }
@@ -36,7 +36,7 @@ public class LexerTest {
     @Test
     public void operatorTokenTest() {
         for (String keyword : PredefinedTokens.operators.keySet()) {
-            Lexer lexer = new LexerImpl(getInputStream(keyword));
+            Lexer lexer = new Lexer(getInputStream(keyword));
             Assert.assertEquals(PredefinedTokens.operators.get(keyword), lexer.nextToken().getTokenType());
         }
     }

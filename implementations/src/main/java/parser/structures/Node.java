@@ -1,6 +1,9 @@
-package utils.structures;
+package parser.structures;
+
+import parser.Parser;
 
 public abstract class Node {
+    protected static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Node.class);
     protected Node parent;
 
     public enum Type {
@@ -14,7 +17,7 @@ public abstract class Node {
         StatementBlock,
         Variable,
         InitStatement,
-        WhileStatement
+        Function, PrimaryCondition, RelationalCondition, EqualityCondition, AndCondition, MultiplicativeExpression, PrimaryExpression, WhileStatement
     }
 
     public Node getParent() {
@@ -22,4 +25,6 @@ public abstract class Node {
     }
 
     public abstract Type getType();
+
+    abstract public void parse(final Parser parser);
 }
