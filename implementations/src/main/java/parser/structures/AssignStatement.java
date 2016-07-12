@@ -1,4 +1,6 @@
-package utils.structures;
+package parser.structures;
+
+import parser.Parser;
 
 public class AssignStatement extends Node {
     private Variable variable;
@@ -9,8 +11,19 @@ public class AssignStatement extends Node {
         this.value = value;
     }
 
+    public AssignStatement() {
+    }
+
+    public Variable getVariable() {
+        return variable;
+    }
+
     public void setVariable(Variable variable) {
         this.variable = variable;
+    }
+
+    public Node getValue() {
+        return value;
     }
 
     public void setValue(Node value) {
@@ -20,5 +33,10 @@ public class AssignStatement extends Node {
     @Override
     public Type getType() {
         return Type.Assignment;
+    }
+
+    @Override
+    public void parse(Parser parser) {
+
     }
 }

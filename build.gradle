@@ -8,7 +8,6 @@ repositories {
 }
 
 dependencies {
-    compile project(":interfaces")
     compile project(":implementations")
     compile project(":tests")
 }

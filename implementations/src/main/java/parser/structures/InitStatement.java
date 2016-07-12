@@ -1,7 +1,10 @@
-package utils.structures;
+package parser.structures;
+
+import parser.Parser;
+import utils.TokenType;
 
 public class InitStatement extends Node {
-    private Variable variable;
+    private Variable variable = new Variable();
     private Node assignment;
 
     public Variable getVariable() {
@@ -23,5 +26,15 @@ public class InitStatement extends Node {
     @Override
     public Type getType() {
         return Type.InitStatement;
+    }
+
+    @Override
+    public void parse(final Parser parser) {
+        parser.accept(TokenType.DEF);
+        variable.parse(parser);
+        if (parser.checkNextTokenType(TokenType.ASSIGN)) {
+            parser.accept();
+            assignment = parser.parseAssignable();
+        }
     }
 }
