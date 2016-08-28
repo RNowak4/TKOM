@@ -1,9 +1,13 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
+import utils.LiteralFactory;
 import utils.TokenType;
 
-public class Condition extends Node {
+public class Condition extends Parsable implements Executable {
     private AndCondition leftCondition = new AndCondition();
     // TODO change co Condition rightCondition
     private AndCondition rightCondition = null;
@@ -28,6 +32,19 @@ public class Condition extends Node {
             parser.accept();
             rightCondition = new AndCondition();
             rightCondition.parse(parser);
+        }
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        if (leftCondition.execute(executor, scope).isTrue()) {
+            return LiteralFactory.getTrueValue();
+        } else {
+            if (rightCondition.execute(executor, scope).isTrue()) {
+                return LiteralFactory.getTrueValue();
+            } else {
+                return LiteralFactory.getFalseValue();
+            }
         }
     }
 }

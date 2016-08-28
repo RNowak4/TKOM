@@ -1,9 +1,12 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class WhileStatement extends Node {
+public class WhileStatement extends Parsable implements Executable {
     private Condition condition = new Condition();
     private StatementBlock statementBlock = new StatementBlock();
 
@@ -37,5 +40,16 @@ public class WhileStatement extends Node {
         condition.parse(parser);
         parser.accept(TokenType.PARENTH_CLOSE);
         statementBlock.parse(parser);
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        Literal result = null;
+
+        while (condition.execute(executor, scope).isTrue()) {
+            result = statementBlock.execute(executor, scope);
+        }
+
+        return result;
     }
 }

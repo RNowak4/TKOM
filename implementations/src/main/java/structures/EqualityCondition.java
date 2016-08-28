@@ -1,10 +1,14 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
+import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class EqualityCondition extends Node {
+public class EqualityCondition extends Parsable implements Executable {
     private boolean negated = false;
     private RelationalCondition leftCondition = new RelationalCondition();
     private RelationalCondition rightCondition;
@@ -58,5 +62,28 @@ public class EqualityCondition extends Node {
 
     public void setNegated(boolean negated) {
         this.negated = negated;
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        final Literal leftConditionResult = leftCondition.execute(executor, scope);
+
+        if (rightCondition == null) {
+            return leftConditionResult;
+        } else {
+            final Literal rightConditionResult = rightCondition.execute(executor, scope);
+
+            if (equalityOp == TokenType.EQUALS) {
+                if (leftConditionResult.equals(rightConditionResult))
+                    return LiteralFactory.getTrueValue();
+                else
+                    return LiteralFactory.getFalseValue();
+            } else {
+                if (!leftConditionResult.equals(rightConditionResult))
+                    return LiteralFactory.getTrueValue();
+                else
+                    return LiteralFactory.getFalseValue();
+            }
+        }
     }
 }

@@ -1,9 +1,12 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class IfStatement extends Node {
+public class IfStatement extends Parsable implements Executable {
     private Condition condition = new Condition();
     private StatementBlock trueBlock = new StatementBlock();
     private StatementBlock elseBlock = null;
@@ -47,5 +50,16 @@ public class IfStatement extends Node {
             elseBlock = new StatementBlock();
             elseBlock.parse(parser);
         }
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        final Literal conditionResult = condition.execute(executor, scope);
+        if (conditionResult.isTrue()) {
+            return trueBlock.execute(executor, scope);
+        } else if (elseBlock != null)
+            return elseBlock.execute(executor, scope);
+        else
+            return null;
     }
 }

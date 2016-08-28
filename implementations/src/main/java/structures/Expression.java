@@ -1,10 +1,13 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class Expression extends Node {
+public class Expression extends Parsable implements Executable {
     private MultiplicativeExpression leftExpression = new MultiplicativeExpression();
     private MultiplicativeExpression rightExpression;
     private TokenType operator = TokenType.UNDEFINED;
@@ -34,6 +37,24 @@ public class Expression extends Node {
             operator = token.getTokenType();
             rightExpression = new MultiplicativeExpression();
             rightExpression.parse(parser);
+        }
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        final Literal leftExpressionResult = leftExpression.execute(executor, scope);
+
+        if (rightExpression == null) {
+            return leftExpressionResult;
+        } else {
+            final Literal rightExpressionResult = rightExpression.execute(executor, scope);
+
+            if (operator == TokenType.ADD)
+                return Literal.add(leftExpressionResult, rightExpressionResult);
+            else if (operator == TokenType.SUB)
+                return Literal.sub(leftExpressionResult, rightExpressionResult);
+            else
+                throw new RuntimeException("Bad operator!");
         }
     }
 }

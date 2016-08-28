@@ -1,11 +1,14 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class InitStatement extends Node {
+public class InitStatement extends Parsable implements Executable {
     private Variable variable = new Variable();
-    private Node assignment;
+    private Parsable assignment;
 
     public Variable getVariable() {
         return variable;
@@ -15,11 +18,11 @@ public class InitStatement extends Node {
         this.variable = variable;
     }
 
-    public Node getAssignment() {
+    public Parsable getAssignment() {
         return assignment;
     }
 
-    public void setAssignment(Node assignment) {
+    public void setAssignment(Parsable assignment) {
         this.assignment = assignment;
     }
 
@@ -36,5 +39,15 @@ public class InitStatement extends Node {
             parser.accept();
             assignment = parser.parseAssignable();
         }
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        final Literal newVal = ((Executable) assignment).execute(executor, scope);
+
+        variable.setValue(newVal);
+        scope.addVariable(variable);
+
+        return newVal;
     }
 }

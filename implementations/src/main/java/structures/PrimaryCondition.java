@@ -1,18 +1,22 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
+import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class PrimaryCondition extends Node {
-    private Node operand;
+public class PrimaryCondition extends Parsable implements Executable {
+    private Parsable operand;
     boolean negated;
 
-    public Node getOperand() {
+    public Parsable getOperand() {
         return operand;
     }
 
-    public void setOperand(Node operand) {
+    public void setOperand(Parsable operand) {
         this.operand = operand;
     }
 
@@ -63,5 +67,20 @@ public class PrimaryCondition extends Node {
             default:
                 throw new RuntimeException("You shouldn't see that message. Sth is broken.");
         }
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        final Executable executableOperand = (Executable) operand;
+        final Literal result = executableOperand.execute(executor, scope);
+
+        if (!negated && result.isTrue())
+            return LiteralFactory.getTrueValue();
+        else if (!negated)
+            return LiteralFactory.getFalseValue();
+        else if (negated && result.isTrue())
+            return LiteralFactory.getFalseValue();
+        else
+            return LiteralFactory.getTrueValue();
     }
 }

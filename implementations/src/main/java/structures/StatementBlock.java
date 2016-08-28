@@ -1,5 +1,8 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.Token;
 import utils.TokenType;
@@ -7,14 +10,14 @@ import utils.TokenType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatementBlock extends Node {
-    private List<Node> instructions = new ArrayList<>();
+public class StatementBlock extends Parsable implements Executable {
+    private List<Parsable> instructions = new ArrayList<>();
 
-    public List<Node> getInstructions() {
+    public List<Parsable> getInstructions() {
         return instructions;
     }
 
-    public void addInstruction(final Node instruction) {
+    public void addInstruction(final Parsable instruction) {
         instructions.add(instruction);
     }
 
@@ -28,7 +31,7 @@ public class StatementBlock extends Node {
         log.trace("Parsing statement block.");
         parser.accept(TokenType.BRACKET_OPEN);
         Token token;
-        while ((token = parser.checkAccept(TokenType.IF, TokenType.WHILE, TokenType.DEF, TokenType.ID, TokenType.RETURN)).getTokenType()
+        while ((token = parser.checkAccept(TokenType.IF, TokenType.WHILE, TokenType.DEF, TokenType.ID, TokenType.RETURN, TokenType.SEMICOLON, TokenType.BRACKET_CLOSE)).getTokenType()
                 != TokenType.BRACKET_CLOSE) {
 
             switch (token.getTokenType()) {
@@ -65,10 +68,28 @@ public class StatementBlock extends Node {
                 }
                 break;
 
+                case SEMICOLON: {
+                    parser.accept();
+                    break;
+                }
+
                 default:
                     throw new RuntimeException("You shouldn't see that message. Sth is broken.");
             }
         }
+        parser.accept();
         log.trace("Successfully parsed statement block.");
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        for (Parsable instruction : instructions) {
+            final Executable executable = (Executable) instruction;
+            final Literal result = executable.execute(executor, scope);
+            if (instruction instanceof ReturnStatement)
+                return result;
+        }
+
+        return null;
     }
 }

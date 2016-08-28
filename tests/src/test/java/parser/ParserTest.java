@@ -3,7 +3,7 @@ package parser;
 import lexer.Lexer;
 import org.junit.Assert;
 import org.junit.Test;
-import parser.structures.*;
+import structures.*;
 import utils.TokenType;
 
 import java.io.ByteArrayInputStream;
@@ -22,9 +22,8 @@ public class ParserTest {
     private Parser getParser(final String string) {
         final InputStream inputStream = getInputStream(string);
         final Lexer lexer = new Lexer(inputStream);
-        final Parser parser = new Parser(lexer);
 
-        return parser;
+        return new Parser(lexer);
     }
 
     @Test
@@ -154,12 +153,11 @@ public class ParserTest {
 
     @Test
     public void parseReturnStatement() {
-        final String text = "return 1 + j;";
+        final String text = "return 2 + 5j;";
         final Parser parser = getParser(text);
 
         ReturnStatement returnStatement = new ReturnStatement();
         returnStatement.parse(parser);
-        returnStatement = null;
     }
 
     @Test
@@ -169,6 +167,14 @@ public class ParserTest {
 
         ReturnStatement returnStatement = new ReturnStatement();
         returnStatement.parse(parser);
-        returnStatement = null;
+    }
+
+    @Test
+    public void parseInitStatement() {
+        final String text = "def a = 5 + j;";
+        final Parser parser = getParser(text);
+
+        InitStatement initStatement = new InitStatement();
+        initStatement.parse(parser);
     }
 }

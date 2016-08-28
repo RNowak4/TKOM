@@ -1,7 +1,7 @@
 package parser;
 
 import lexer.Lexer;
-import parser.structures.*;
+import structures.*;
 import utils.Token;
 import utils.TokenType;
 
@@ -24,7 +24,18 @@ public class Parser {
     }
 
     public Program parse() {
-        return null;
+        final Program program = new Program();
+
+        while (!checkNextTokenType(TokenType.END)) {
+            Function function = new Function();
+            function.parse(this);
+            if (function.isEmpty())
+                break;
+
+            program.addFunction(function);
+        }
+
+        return program;
     }
 
     /**
@@ -135,11 +146,11 @@ public class Parser {
         return parameters;
     }
 
-    public Node parseFunctionCallOrVariable() {
+    public Parsable parseFunctionCallOrVariable() {
         final String name = accept(TokenType.ID).getTokenString();
         if (checkNextTokenType(TokenType.PARENTH_OPEN)) {
             final FunctionCall functionCall = new FunctionCall();
-            final List<Node> arguments = parseParameters().stream()
+            final List<Parsable> arguments = parseParameters().stream()
                     .map(Variable::new).collect(Collectors.toList());
             functionCall.setName(name);
             functionCall.setArguments(arguments);
@@ -155,8 +166,8 @@ public class Parser {
             return new Variable(name);
     }
 
-    public Node parseAssignable() {
-        if (checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD)) {
+    public Parsable parseAssignable() {
+        if (checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD, TokenType.ID)) {
             final Expression expression = new Expression();
             expression.parse(this);
             return expression;

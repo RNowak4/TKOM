@@ -1,23 +1,26 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class ReturnStatement extends Node {
-    private Node returnVal;
+public class ReturnStatement extends Parsable implements Executable {
+    private Parsable returnVal;
 
     public ReturnStatement() {
     }
 
-    public ReturnStatement(Node returnVal) {
+    public ReturnStatement(Parsable returnVal) {
         this.returnVal = returnVal;
     }
 
-    public Node getReturnVal() {
+    public Parsable getReturnVal() {
         return returnVal;
     }
 
-    public void setReturnVal(Node returnVal) {
+    public void setReturnVal(Parsable returnVal) {
         this.returnVal = returnVal;
     }
 
@@ -32,10 +35,16 @@ public class ReturnStatement extends Node {
         if (parser.checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD)) {
             returnVal = new Literal();
             returnVal.parse(parser);
-        }
-        else
+        } else
             returnVal = parser.parseFunctionCallOrVariable();
 
         parser.accept(TokenType.SEMICOLON);
+    }
+
+    @Override
+    public Literal execute(Executor executor, Scope scope) {
+        final Executable executable = (Executable) returnVal;
+
+        return executable.execute(executor, scope);
     }
 }

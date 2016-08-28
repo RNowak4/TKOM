@@ -1,13 +1,16 @@
-package parser.structures;
+package structures;
 
+import executor.Executable;
+import executor.Executor;
+import executor.Scope;
 import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class PrimaryExpression extends Node {
-    private Node expression;
+public class PrimaryExpression extends Parsable {
+    private Parsable expression;
 
-    public Node getExpression() {
+    public Parsable getExpression() {
         return expression;
     }
 
@@ -46,5 +49,11 @@ public class PrimaryExpression extends Node {
         }
 
         expression.parse(parser);
+    }
+
+    public Literal execute(Executor executor, Scope scope) {
+        final Executable executable = (Executable) expression;
+
+        return executable.execute(executor, scope);
     }
 }
