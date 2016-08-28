@@ -9,14 +9,14 @@ import utils.TokenType;
 
 public class Expression extends Parsable implements Executable {
     private MultiplicativeExpression leftExpression = new MultiplicativeExpression();
-    private MultiplicativeExpression rightExpression;
+    private Expression rightExpression;
     private TokenType operator = TokenType.UNDEFINED;
 
     public MultiplicativeExpression getLeftExpression() {
         return leftExpression;
     }
 
-    public MultiplicativeExpression getRightExpression() {
+    public Expression getRightExpression() {
         return rightExpression;
     }
 
@@ -35,7 +35,7 @@ public class Expression extends Parsable implements Executable {
         if (parser.checkNextTokenType(TokenType.ADD, TokenType.SUB)) {
             final Token token = parser.accept();
             operator = token.getTokenType();
-            rightExpression = new MultiplicativeExpression();
+            rightExpression = new Expression();
             rightExpression.parse(parser);
         }
     }

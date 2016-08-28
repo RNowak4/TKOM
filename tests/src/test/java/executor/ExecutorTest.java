@@ -25,7 +25,7 @@ public class ExecutorTest {
     // Testowy test. hehe
     @Test
     public void parseParametersTest() {
-        final String text = "function main() { def a = 5 + j; def b = 5j; def c = a + b; }";
+        final String text = "function main() { def a = 5 + j; def b = 5j; def c = a + b + 2 + 3j; }";
         final Parser parser = getParser(text);
         final Program program = parser.parse();
         final Executor executor = new Executor(program);

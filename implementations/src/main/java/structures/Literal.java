@@ -71,9 +71,11 @@ public class Literal extends Parsable implements Executable {
 
     private int parseNumberValue(boolean minused, final Parser parser) {
         final Token numberToken = parser.accept(TokenType.RE_NUMBER, TokenType.IM_NUMBER);
+        int number;
         if (numberToken.getTokenType() == TokenType.RE_NUMBER)
-            return Integer.valueOf(numberToken.getTokenString());
-        int number = getImValue(numberToken.getTokenString());
+            number = Integer.valueOf(numberToken.getTokenString());
+        else
+            number = getImValue(numberToken.getTokenString());
         if (minused)
             return -number;
         else
