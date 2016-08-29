@@ -80,9 +80,9 @@ public class EqualityCondition extends Parsable implements Executable {
                     return LiteralFactory.getFalseValue();
             } else {
                 if (!leftConditionResult.equals(rightConditionResult))
-                    return LiteralFactory.getTrueValue();
-                else
                     return LiteralFactory.getFalseValue();
+                else
+                    return LiteralFactory.getTrueValue();
             }
         }
     }

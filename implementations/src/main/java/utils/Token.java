@@ -23,9 +23,7 @@ public class Token {
 
         Token token = (Token) o;
 
-        if (tokenString != null ? !tokenString.equals(token.tokenString) : token.tokenString != null) return false;
-        return tokenType == token.tokenType;
-
+        return tokenString != null ? tokenString.equals(token.tokenString) : token.tokenString == null && tokenType == token.tokenType;
     }
 
     public int hashCode() {

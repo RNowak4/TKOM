@@ -31,7 +31,7 @@ public class StatementBlock extends Parsable implements Executable {
         log.trace("Parsing statement block.");
         parser.accept(TokenType.BRACKET_OPEN);
         Token token;
-        while ((token = parser.checkAccept(TokenType.IF, TokenType.WHILE, TokenType.DEF, TokenType.ID, TokenType.RETURN, TokenType.SEMICOLON, TokenType.BRACKET_CLOSE)).getTokenType()
+        while ((token = parser.checkAccept(TokenType.IF, TokenType.WHILE, TokenType.DEF, TokenType.ID, TokenType.RETURN, TokenType.SEMICOLON, TokenType.BRACKET_CLOSE, TokenType.PRINT)).getTokenType()
                 != TokenType.BRACKET_CLOSE) {
 
             switch (token.getTokenType()) {
@@ -70,8 +70,15 @@ public class StatementBlock extends Parsable implements Executable {
 
                 case SEMICOLON: {
                     parser.accept();
-                    break;
                 }
+                break;
+
+                case PRINT: {
+                    final PrintStatement printStatement = new PrintStatement();
+                    printStatement.parse(parser);
+                    addInstruction(printStatement);
+                }
+                break;
 
                 default:
                     throw new RuntimeException("You shouldn't see that message. Sth is broken.");
@@ -86,8 +93,13 @@ public class StatementBlock extends Parsable implements Executable {
         for (Parsable instruction : instructions) {
             final Executable executable = (Executable) instruction;
             final Literal result = executable.execute(executor, scope);
-            if (instruction instanceof ReturnStatement)
+            if (scope.isBreak()) {
                 return result;
+            }
+            if (instruction instanceof ReturnStatement) {
+                scope.addBreak();
+                return result;
+            }
         }
 
         return null;

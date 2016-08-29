@@ -8,14 +8,14 @@ import utils.TokenType;
 
 public class MultiplicativeExpression extends Parsable {
     private PrimaryExpression leftExpression = new PrimaryExpression();
-    private PrimaryExpression rightExpression;
+    private MultiplicativeExpression rightExpression;
     private TokenType operator = TokenType.UNDEFINED;
 
     public PrimaryExpression getLeftExpression() {
         return leftExpression;
     }
 
-    public PrimaryExpression getRightExpression() {
+    public MultiplicativeExpression getRightExpression() {
         return rightExpression;
     }
 
@@ -34,7 +34,7 @@ public class MultiplicativeExpression extends Parsable {
         if (parser.checkNextTokenType(TokenType.MUL, TokenType.DIV, TokenType.MODULO)) {
             final Token token = parser.accept();
             operator = token.getTokenType();
-            rightExpression = new PrimaryExpression();
+            rightExpression = new MultiplicativeExpression();
             rightExpression.parse(parser);
         }
     }

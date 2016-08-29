@@ -23,7 +23,8 @@ public abstract class Parsable {
         AndCondition,
         MultiplicativeExpression,
         PrimaryExpression,
-        WhileStatement
+        WhileStatement,
+        PrintStatement
     }
 
     public abstract Type getType();

@@ -35,7 +35,9 @@ public class ReturnStatement extends Parsable implements Executable {
         if (parser.checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD)) {
             returnVal = new Literal();
             returnVal.parse(parser);
-        } else
+        } else if (parser.checkNextTokenType(TokenType.SEMICOLON))
+            return;
+        else
             returnVal = parser.parseFunctionCallOrVariable();
 
         parser.accept(TokenType.SEMICOLON);
@@ -43,6 +45,8 @@ public class ReturnStatement extends Parsable implements Executable {
 
     @Override
     public Literal execute(Executor executor, Scope scope) {
+        if (returnVal == null)
+            return null;
         final Executable executable = (Executable) returnVal;
 
         return executable.execute(executor, scope);

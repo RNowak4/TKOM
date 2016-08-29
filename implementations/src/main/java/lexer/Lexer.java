@@ -36,7 +36,7 @@ public class Lexer {
             charCounter = 1;
             ++lineCounter;
         }
-        return c == ' ' || c == '\t' || c == '\n';
+        return c == ' ' || c == '\t' || c == '\n' || c == '\r';
     }
 
     private boolean isDigit(final char c) {
@@ -75,6 +75,7 @@ public class Lexer {
             return TokenFactory.getToken(TokenType.END);
 
         if (tokenChar == 0 || isSpace(tokenChar))
+            //noinspection StatementWithEmptyBody
             while (isSpace(tokenChar = nextChar()))
                 ;
 

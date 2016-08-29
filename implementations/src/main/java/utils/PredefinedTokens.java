@@ -24,6 +24,7 @@ public class PredefinedTokens {
         keywords.put("while", TokenType.WHILE);
         keywords.put("def", TokenType.DEF);
         keywords.put("return", TokenType.RETURN);
+        keywords.put("print", TokenType.PRINT);
 
         operators.put("<", TokenType.LOWER);
         operators.put("<=", TokenType.LOWER_EQUALS);

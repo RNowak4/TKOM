@@ -39,12 +39,13 @@ public class Condition extends Parsable implements Executable {
     public Literal execute(Executor executor, Scope scope) {
         if (leftCondition.execute(executor, scope).isTrue()) {
             return LiteralFactory.getTrueValue();
-        } else {
+        } else if (rightCondition != null) {
             if (rightCondition.execute(executor, scope).isTrue()) {
                 return LiteralFactory.getTrueValue();
             } else {
                 return LiteralFactory.getFalseValue();
             }
         }
+        return LiteralFactory.getFalseValue();
     }
 }

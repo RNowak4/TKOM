@@ -90,7 +90,7 @@ public class Literal extends Parsable implements Executable {
     }
 
     public boolean isTrue() {
-        return reValue != 0 && imValue != 0;
+        return reValue != 0 || imValue != 0;
     }
 
     @Override
@@ -170,5 +170,10 @@ public class Literal extends Parsable implements Executable {
     @Override
     public Literal execute(Executor executor, Scope scope) {
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return " " + reValue + " " + imValue + "j ";
     }
 }

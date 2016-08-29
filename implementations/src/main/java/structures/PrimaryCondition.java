@@ -75,12 +75,12 @@ public class PrimaryCondition extends Parsable implements Executable {
         final Literal result = executableOperand.execute(executor, scope);
 
         if (!negated && result.isTrue())
-            return LiteralFactory.getTrueValue();
+            return result;
         else if (!negated)
             return LiteralFactory.getFalseValue();
         else if (negated && result.isTrue())
             return LiteralFactory.getFalseValue();
         else
-            return LiteralFactory.getTrueValue();
+            return result;
     }
 }

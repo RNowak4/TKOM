@@ -25,7 +25,7 @@ public class PrimaryExpression extends Parsable {
                 TokenType.PARENTH_OPEN);
         switch (token.getTokenType()) {
             case ID: {
-                expression = new Variable();
+                expression = parser.parseFunctionCallOrVariable();
             }
             break;
 
@@ -34,12 +34,14 @@ public class PrimaryExpression extends Parsable {
             case SUB:
             case ADD: {
                 expression = new Literal();
+                expression.parse(parser);
             }
             break;
 
             case PARENTH_OPEN: {
                 parser.accept();
                 expression = new Expression();
+                expression.parse(parser);
                 parser.accept(TokenType.PARENTH_CLOSE);
             }
             break;
@@ -47,8 +49,6 @@ public class PrimaryExpression extends Parsable {
             default:
                 throw new RuntimeException("You shouldn't see that message. Sth is broken.");
         }
-
-        expression.parse(parser);
     }
 
     public Literal execute(Executor executor, Scope scope) {

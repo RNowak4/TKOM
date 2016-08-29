@@ -1,0 +1,40 @@
+function main() {
+    def y = 1-2j;
+    def a = 5 + j;
+    def b = koty(y,a);
+    def c = 5;
+    sum(c);
+    print(b);
+    y = silnia(c);
+    print(y);
+}
+
+function koty(a,b) {
+    def x = a+b;
+    if(a>b) {
+        x=1;
+    } else {
+        x=2*(j+j+(j*j))+2;
+    }
+    return x;
+}
+
+function sum(a) {
+    def z = 0;
+    if(a != z) {
+        return;
+    }
+    a = a - 1;
+    print(a);
+    sum(a);
+}
+
+function silnia(n) {
+    if(n == 1) {
+        return 1;
+    } else {
+        def x = n-1;
+        def z = n * silnia(x);
+        return z;
+    }
+}

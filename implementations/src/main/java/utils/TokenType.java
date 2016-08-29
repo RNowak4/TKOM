@@ -36,5 +36,6 @@ public enum TokenType {
     COMMA,
     AND,
     OR,
-    UNARY
+    UNARY,
+    PRINT
 }

@@ -82,11 +82,12 @@ public class Function extends Parsable {
         if (args.size() != parameters.size())
             throw new RuntimeException("Bad nubmer of arguments in function call!");
 
+        final Scope functionScope = scope.getCopy();
         for (int i = 0; i < args.size(); i++) {
-            scope.addVariable(parameters.get(i), args.get(i));
+            functionScope.addVariable(parameters.get(i), args.get(i));
         }
 
-        return statementBlock.execute(executor, scope);
+        return statementBlock.execute(executor, functionScope);
     }
 
 }

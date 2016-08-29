@@ -1,9 +1,9 @@
 package executor;
 
 import lexer.Lexer;
+import org.junit.Ignore;
 import org.junit.Test;
 import parser.Parser;
-import structures.Program;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -22,14 +22,9 @@ public class ExecutorTest {
         return new Parser(lexer);
     }
 
-    // Testowy test. hehe
     @Test
+    @Ignore
     public void parseParametersTest() {
-        final String text = "function main() { def a = 5 + j; def b = 5j; def c = a + b + 2 + 3j; }";
-        final Parser parser = getParser(text);
-        final Program program = parser.parse();
-        final Executor executor = new Executor(program);
-        executor.execute();
     }
 
 }
