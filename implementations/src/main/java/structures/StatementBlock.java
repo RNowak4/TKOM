@@ -93,11 +93,11 @@ public class StatementBlock extends Parsable implements Executable {
         for (Parsable instruction : instructions) {
             final Executable executable = (Executable) instruction;
             final Literal result = executable.execute(executor, scope);
-            if (scope.isBreak()) {
+            if (scope.isReturn()) {
                 return result;
             }
             if (instruction instanceof ReturnStatement) {
-                scope.addBreak();
+                scope.setReturn(true);
                 return result;
             }
         }

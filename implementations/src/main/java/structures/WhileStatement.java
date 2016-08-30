@@ -36,6 +36,7 @@ public class WhileStatement extends Parsable implements Executable {
 
     @Override
     public void parse(final Parser parser) {
+        parser.accept();
         parser.accept(TokenType.PARENTH_OPEN);
         condition.parse(parser);
         parser.accept(TokenType.PARENTH_CLOSE);

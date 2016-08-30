@@ -5,8 +5,14 @@ function main() {
     def c = 5;
     sum(c);
     print(b);
-    y = silnia(c);
+    c = 5;
+    b = 4;
+    y = silnia(c) * silnia(b);
     print(y);
+    y = 15;
+    a = fib(y);
+    print(a);
+    iter(y);
 }
 
 function koty(a,b) {
@@ -30,11 +36,36 @@ function sum(a) {
 }
 
 function silnia(n) {
-    if(n == 1) {
+    if(n <= 1) {
         return 1;
     } else {
         def x = n-1;
         def z = n * silnia(x);
         return z;
+    }
+}
+
+function fib(n) {
+    if(n <= 1) {
+        return n;
+    } else {
+        if(n > 1) {
+            if(n < 1) {
+                return;
+            }
+            else {
+                def x = n - 1;
+                def y = n - 2;
+                def z = fib(x) + fib(y);
+                return z;
+            }
+        }
+    }
+}
+
+function iter(n) {
+    while(n > 0) {
+        print(n);
+        n = n - 1;
     }
 }

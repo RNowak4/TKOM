@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Scope {
+    private boolean isReturn;
     private int breaks;
     private Map<String, Literal> variables = new HashMap<>();
 
@@ -44,4 +45,11 @@ public class Scope {
         ++breaks;
     }
 
+    public boolean isReturn() {
+        return isReturn;
+    }
+
+    public void setReturn(boolean aReturn) {
+        isReturn = aReturn;
+    }
 }
