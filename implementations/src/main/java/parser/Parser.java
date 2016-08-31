@@ -168,7 +168,7 @@ public class Parser {
 
     public Parsable parseAssignable() {
         if (checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD, TokenType.ID)) {
-            final Expression expression = new Expression();
+            final AdditiveExpression expression = new AdditiveExpression();
             expression.parse(this);
             return expression;
         } else

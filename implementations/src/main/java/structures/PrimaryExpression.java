@@ -40,7 +40,7 @@ public class PrimaryExpression extends Parsable {
 
             case PARENTH_OPEN: {
                 parser.accept();
-                expression = new Expression();
+                expression = new AdditiveExpression();
                 expression.parse(parser);
                 parser.accept(TokenType.PARENTH_CLOSE);
             }

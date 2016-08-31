@@ -32,8 +32,8 @@ public class ReturnStatement extends Parsable implements Executable {
     @Override
     public void parse(final Parser parser) {
         parser.accept(TokenType.RETURN);
-        if (parser.checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD)) {
-            returnVal = new Literal();
+        if (parser.checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD, TokenType.ID, TokenType.PARENTH_OPEN)) {
+            returnVal = new AdditiveExpression();
             returnVal.parse(parser);
         } else if (parser.checkNextTokenType(TokenType.SEMICOLON))
             return;

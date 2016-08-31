@@ -7,16 +7,16 @@ import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class Expression extends Parsable implements Executable {
+public class AdditiveExpression extends Parsable implements Executable {
     private MultiplicativeExpression leftExpression = new MultiplicativeExpression();
-    private Expression rightExpression;
+    private AdditiveExpression rightExpression;
     private TokenType operator = TokenType.UNDEFINED;
 
     public MultiplicativeExpression getLeftExpression() {
         return leftExpression;
     }
 
-    public Expression getRightExpression() {
+    public AdditiveExpression getRightExpression() {
         return rightExpression;
     }
 
@@ -35,7 +35,7 @@ public class Expression extends Parsable implements Executable {
         if (parser.checkNextTokenType(TokenType.ADD, TokenType.SUB)) {
             final Token token = parser.accept();
             operator = token.getTokenType();
-            rightExpression = new Expression();
+            rightExpression = new AdditiveExpression();
             rightExpression.parse(parser);
         }
     }
