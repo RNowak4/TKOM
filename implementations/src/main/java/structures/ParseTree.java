@@ -4,17 +4,17 @@ import executor.Executable;
 import utils.TokenType;
 
 public abstract class ParseTree extends Parsable implements Executable {
-    public abstract ParseTree getLeftParseTree();
+    protected abstract ParseTree getLeftParseTree();
 
-    public abstract ParseTree getRightParseTree();
+    protected abstract ParseTree getRightParseTree();
 
-    public abstract void setLeftParseTree(ParseTree parseTree);
+    protected abstract void setLeftParseTree(ParseTree parseTree);
 
-    public abstract TokenType getOperator();
+    protected abstract TokenType getOperator();
 
-    public abstract void setOperator(TokenType operator);
+    protected abstract void setOperator(TokenType operator);
 
-    public abstract void setRightParseTree(ParseTree parseTree);
+    protected abstract void setRightParseTree(ParseTree parseTree);
 
     protected static void normalize(final ParseTree parseTree) {
         for (ParseTree rightParseTree = parseTree.getRightParseTree();

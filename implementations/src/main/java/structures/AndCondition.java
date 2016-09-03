@@ -6,10 +6,12 @@ import parser.Parser;
 import utils.LiteralFactory;
 import utils.TokenType;
 
-public class AndCondition extends ParseTree {
-    private ParseTree leftCondition = new EqualityCondition();
-    private ParseTree rightCondition;
-    private TokenType operator = TokenType.AND;
+public class AndCondition extends Condition {
+
+    public AndCondition() {
+        this.leftCondition = new EqualityCondition();
+        this.operator = TokenType.AND;
+    }
 
     @Override
     public Type getType() {
@@ -40,35 +42,5 @@ public class AndCondition extends ParseTree {
             else
                 return LiteralFactory.getFalseValue();
         }
-    }
-
-    @Override
-    public ParseTree getLeftParseTree() {
-        return leftCondition;
-    }
-
-    @Override
-    public ParseTree getRightParseTree() {
-        return rightCondition;
-    }
-
-    @Override
-    public void setLeftParseTree(ParseTree parseTree) {
-        this.leftCondition = parseTree;
-    }
-
-    @Override
-    public TokenType getOperator() {
-        return operator;
-    }
-
-    @Override
-    public void setOperator(TokenType operator) {
-        this.operator = operator;
-    }
-
-    @Override
-    public void setRightParseTree(ParseTree parseTree) {
-        this.rightCondition = parseTree;
     }
 }

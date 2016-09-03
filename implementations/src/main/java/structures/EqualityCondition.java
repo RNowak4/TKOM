@@ -7,11 +7,12 @@ import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class EqualityCondition extends ParseTree {
+public class EqualityCondition extends Condition {
     private boolean negated = false;
-    private ParseTree leftCondition = new RelationalCondition();
-    private ParseTree rightCondition;
-    private TokenType equalityOp;
+
+    public EqualityCondition() {
+        this.leftCondition = new RelationalCondition();
+    }
 
     @Override
     public Type getType() {
@@ -27,22 +28,13 @@ public class EqualityCondition extends ParseTree {
                 negated = true;
             rightCondition = new EqualityCondition();
             rightCondition.parse(parser);
-            equalityOp = operator.getTokenType();
+            this.operator = operator.getTokenType();
         }
         normalize(this);
     }
 
-    public boolean isNegated() {
-        return negated;
-    }
-
-    public void setNegated(boolean negated) {
-        this.negated = negated;
-    }
-
     @Override
     public Literal execute(Executor executor, Scope scope) {
-//        normalize(this);
         final Literal leftConditionResult = leftCondition.execute(executor, scope);
 
         if (rightCondition == null) {
@@ -50,7 +42,7 @@ public class EqualityCondition extends ParseTree {
         } else {
             final Literal rightConditionResult = rightCondition.execute(executor, scope);
 
-            if (equalityOp == TokenType.EQUALS) {
+            if (this.operator == TokenType.EQUALS) {
                 if (leftConditionResult.equals(rightConditionResult))
                     return LiteralFactory.getTrueValue();
                 else
@@ -62,35 +54,5 @@ public class EqualityCondition extends ParseTree {
                     return LiteralFactory.getTrueValue();
             }
         }
-    }
-
-    @Override
-    public ParseTree getLeftParseTree() {
-        return leftCondition;
-    }
-
-    @Override
-    public ParseTree getRightParseTree() {
-        return rightCondition;
-    }
-
-    @Override
-    public void setLeftParseTree(ParseTree parseTree) {
-        this.leftCondition = parseTree;
-    }
-
-    @Override
-    public TokenType getOperator() {
-        return equalityOp;
-    }
-
-    @Override
-    public void setOperator(TokenType operator) {
-        this.equalityOp = operator;
-    }
-
-    @Override
-    public void setRightParseTree(ParseTree parseTree) {
-        this.rightCondition = parseTree;
     }
 }

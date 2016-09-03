@@ -8,16 +8,12 @@ import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class PrimaryCondition extends ParseTree {
+public class PrimaryCondition extends Condition {
     private Parsable operand;
     boolean negated;
 
     public Parsable getOperand() {
         return operand;
-    }
-
-    public void setOperand(Parsable operand) {
-        this.operand = operand;
     }
 
     public boolean isNegated() {
@@ -82,35 +78,5 @@ public class PrimaryCondition extends ParseTree {
             return LiteralFactory.getFalseValue();
         else
             return LiteralFactory.getTrueValue();
-    }
-
-    @Override
-    public ParseTree getLeftParseTree() {
-        return null;
-    }
-
-    @Override
-    public ParseTree getRightParseTree() {
-        return null;
-    }
-
-    @Override
-    public void setLeftParseTree(ParseTree parseTree) {
-        throw new RuntimeException("Bad invocation!");
-    }
-
-    @Override
-    public TokenType getOperator() {
-        return TokenType.UNDEFINED;
-    }
-
-    @Override
-    public void setOperator(TokenType operator) {
-        throw new RuntimeException("Bad invocation!");
-    }
-
-    @Override
-    public void setRightParseTree(ParseTree parseTree) {
-        throw new RuntimeException("Bad invocation!");
     }
 }

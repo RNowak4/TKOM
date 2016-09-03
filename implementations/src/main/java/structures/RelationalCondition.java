@@ -7,10 +7,11 @@ import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class RelationalCondition extends ParseTree {
-    private ParseTree leftCondition = new PrimaryCondition();
-    private ParseTree rightCondition = null;
-    private TokenType relationalOp = TokenType.UNDEFINED;
+public class RelationalCondition extends Condition {
+
+    public RelationalCondition() {
+        this.leftCondition = new PrimaryCondition();
+    }
 
     @Override
     public Type getType() {
@@ -22,15 +23,11 @@ public class RelationalCondition extends ParseTree {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.LOWER, TokenType.LOWER_EQUALS, TokenType.GREATER, TokenType.GREATER_EQUALS)) {
             final Token operator = parser.accept();
-            relationalOp = operator.getTokenType();
+            this.operator = operator.getTokenType();
             rightCondition = new RelationalCondition();
             rightCondition.parse(parser);
         }
         normalize(this);
-    }
-
-    public TokenType getRelationalOp() {
-        return relationalOp;
     }
 
     @Override
@@ -43,18 +40,18 @@ public class RelationalCondition extends ParseTree {
         } else {
             final Literal rightConditionResult = rightCondition.execute(executor, scope);
 
-            if (relationalOp == TokenType.LOWER) {
+            if (operator == TokenType.LOWER) {
                 return checkLower(leftConditionResult, rightConditionResult);
-            } else if (relationalOp == TokenType.LOWER_EQUALS) {
+            } else if (operator == TokenType.LOWER_EQUALS) {
                 if (checkLower(leftConditionResult, rightConditionResult).isTrue())
                     return LiteralFactory.getTrueValue();
                 else if (leftConditionResult.equals(rightConditionResult))
                     return LiteralFactory.getTrueValue();
                 else
                     return LiteralFactory.getFalseValue();
-            } else if (relationalOp == TokenType.GREATER) {
+            } else if (operator == TokenType.GREATER) {
                 return checkGreater(leftConditionResult, rightConditionResult);
-            } else if (relationalOp == TokenType.GREATER_EQUALS) {
+            } else if (operator == TokenType.GREATER_EQUALS) {
                 if (checkGreater(leftConditionResult, rightConditionResult).isTrue())
                     return LiteralFactory.getTrueValue();
                 else if (leftConditionResult.equals(rightConditionResult))
@@ -91,35 +88,5 @@ public class RelationalCondition extends ParseTree {
         } else {
             return LiteralFactory.getFalseValue();
         }
-    }
-
-    @Override
-    public ParseTree getLeftParseTree() {
-        return leftCondition;
-    }
-
-    @Override
-    public ParseTree getRightParseTree() {
-        return rightCondition;
-    }
-
-    @Override
-    public void setLeftParseTree(ParseTree parseTree) {
-        this.leftCondition = parseTree;
-    }
-
-    @Override
-    public TokenType getOperator() {
-        return relationalOp;
-    }
-
-    @Override
-    public void setOperator(TokenType operator) {
-        this.relationalOp = operator;
-    }
-
-    @Override
-    public void setRightParseTree(ParseTree parseTree) {
-        this.rightCondition = parseTree;
     }
 }

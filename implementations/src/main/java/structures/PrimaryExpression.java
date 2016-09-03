@@ -7,12 +7,8 @@ import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class PrimaryExpression extends ParseTree {
+public class PrimaryExpression extends Expression {
     private Parsable expression;
-
-    public Parsable getExpression() {
-        return expression;
-    }
 
     @Override
     public Type getType() {
@@ -55,30 +51,5 @@ public class PrimaryExpression extends ParseTree {
         final Executable executable = (Executable) expression;
 
         return executable.execute(executor, scope);
-    }
-
-    public ParseTree getLeftParseTree() {
-        return null;
-    }
-
-    public ParseTree getRightParseTree() {
-        return null;
-    }
-
-    public void setLeftParseTree(ParseTree parseTree) {
-    }
-
-    @Override
-    public TokenType getOperator() {
-        return TokenType.UNDEFINED;
-    }
-
-    @Override
-    public void setOperator(TokenType operator) {
-        throw new RuntimeException("BAD");
-    }
-
-    public void setRightParseTree(ParseTree parseTree) {
-        throw new RuntimeException("BAD");
     }
 }

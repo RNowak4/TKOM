@@ -6,35 +6,10 @@ import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class AdditiveExpression extends ParseTree {
-    protected ParseTree leftParseTree = new MultiplicativeExpression();
-    protected ParseTree rightParseTree;
-    protected TokenType operator = TokenType.UNDEFINED;
+public class AdditiveExpression extends Expression {
 
-    public ParseTree getLeftParseTree() {
-        return leftParseTree;
-    }
-
-    public ParseTree getRightParseTree() {
-        return rightParseTree;
-    }
-
-    public void setLeftParseTree(ParseTree parseTree) {
-        this.leftParseTree = parseTree;
-    }
-
-    @Override
-    public TokenType getOperator() {
-        return operator;
-    }
-
-    @Override
-    public void setOperator(TokenType operator) {
-        this.operator = operator;
-    }
-
-    public void setRightParseTree(ParseTree parseTree) {
-        this.rightParseTree = parseTree;
+    public AdditiveExpression() {
+        this.leftExpression = new MultiplicativeExpression();
     }
 
     @Override
@@ -44,26 +19,24 @@ public class AdditiveExpression extends ParseTree {
 
     @Override
     public void parse(final Parser parser) {
-        leftParseTree.parse(parser);
+        leftExpression.parse(parser);
         if (parser.checkNextTokenType(TokenType.ADD, TokenType.SUB)) {
             final Token token = parser.accept();
             operator = token.getTokenType();
-            rightParseTree = new AdditiveExpression();
-            rightParseTree.parse(parser);
+            rightExpression = new AdditiveExpression();
+            rightExpression.parse(parser);
         }
-
         normalize(this);
     }
 
     @Override
     public Literal execute(Executor executor, Scope scope) {
-//        normalize(this);
-        final Literal leftExpressionResult = leftParseTree.execute(executor, scope);
+        final Literal leftExpressionResult = leftExpression.execute(executor, scope);
 
-        if (rightParseTree == null) {
+        if (rightExpression == null) {
             return leftExpressionResult;
         } else {
-            final Literal rightExpressionResult = rightParseTree.execute(executor, scope);
+            final Literal rightExpressionResult = rightExpression.execute(executor, scope);
 
             if (operator == TokenType.ADD)
                 return Literal.add(leftExpressionResult, rightExpressionResult);

@@ -67,5 +67,5 @@ function suma() {
     def b = 2;
     def c = 2;
     def d = 2;
-    return a - (b + b * b);
+    return a - b + b * b;
 }

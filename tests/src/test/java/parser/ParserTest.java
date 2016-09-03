@@ -116,12 +116,12 @@ public class ParserTest {
         final RelationalCondition condition = new RelationalCondition();
         condition.parse(parser);
 
-        final Variable firstOperand = (Variable) ((PrimaryCondition) (condition.getLeftParseTree())).getOperand();
-        final Variable secondOperand = (Variable) ((PrimaryCondition) (condition.getRightParseTree().getLeftParseTree())).getOperand();
+        final Variable firstOperand = (Variable) ((PrimaryCondition) (condition.getLeftCondition())).getOperand();
+        final Variable secondOperand = (Variable) ((PrimaryCondition) (condition.getRightCondition().getLeftCondition())).getOperand();
 
         Assert.assertEquals("a", firstOperand.getName());
         Assert.assertEquals("b", secondOperand.getName());
-        Assert.assertEquals(TokenType.GREATER_EQUALS, condition.getRelationalOp());
+        Assert.assertEquals(TokenType.GREATER_EQUALS, condition.getOperator());
     }
 
     @Test
@@ -131,14 +131,14 @@ public class ParserTest {
         final RelationalCondition condition = new RelationalCondition();
         condition.parse(parser);
 
-        final PrimaryCondition firstCondition = (PrimaryCondition) condition.getLeftParseTree();
-        final PrimaryCondition secondCondition = (PrimaryCondition) condition.getRightParseTree().getLeftParseTree();
+        final PrimaryCondition firstCondition = (PrimaryCondition) condition.getLeftCondition();
+        final PrimaryCondition secondCondition = (PrimaryCondition) condition.getRightCondition().getLeftCondition();
         final Variable firstOperand = (Variable) firstCondition.getOperand();
         final Variable secondOperand = (Variable) secondCondition.getOperand();
 
         Assert.assertEquals("a", firstOperand.getName());
         Assert.assertEquals("b", secondOperand.getName());
-        Assert.assertEquals(TokenType.GREATER_EQUALS, condition.getRelationalOp());
+        Assert.assertEquals(TokenType.GREATER_EQUALS, condition.getOperator());
         Assert.assertTrue(firstCondition.isNegated());
     }
 
