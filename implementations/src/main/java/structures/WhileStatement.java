@@ -7,18 +7,18 @@ import parser.Parser;
 import utils.TokenType;
 
 public class WhileStatement extends Parsable implements Executable {
-    private Condition condition = new Condition();
+    private OrCondition orCondition = new OrCondition();
     private StatementBlock statementBlock = new StatementBlock();
 
     public WhileStatement() {
     }
 
-    public Condition getCondition() {
-        return condition;
+    public OrCondition getOrCondition() {
+        return orCondition;
     }
 
-    public void setCondition(Condition condition) {
-        this.condition = condition;
+    public void setOrCondition(OrCondition orCondition) {
+        this.orCondition = orCondition;
     }
 
     public StatementBlock getStatementBlock() {
@@ -38,7 +38,7 @@ public class WhileStatement extends Parsable implements Executable {
     public void parse(final Parser parser) {
         parser.accept();
         parser.accept(TokenType.PARENTH_OPEN);
-        condition.parse(parser);
+        orCondition.parse(parser);
         parser.accept(TokenType.PARENTH_CLOSE);
         statementBlock.parse(parser);
     }
@@ -47,7 +47,7 @@ public class WhileStatement extends Parsable implements Executable {
     public Literal execute(Executor executor, Scope scope) {
         Literal result = null;
 
-        while (condition.execute(executor, scope).isTrue()) {
+        while (orCondition.execute(executor, scope).isTrue()) {
             result = statementBlock.execute(executor, scope);
         }
 

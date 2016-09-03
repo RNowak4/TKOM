@@ -1,24 +1,15 @@
 package structures;
 
-import executor.Executable;
 import executor.Executor;
 import executor.Scope;
 import parser.Parser;
 import utils.LiteralFactory;
 import utils.TokenType;
 
-public class Condition extends Parsable implements Executable {
-    private AndCondition leftCondition = new AndCondition();
-    // TODO change co Condition rightCondition
-    private AndCondition rightCondition = null;
-
-    public AndCondition getLeftCondition() {
-        return leftCondition;
-    }
-
-    public AndCondition getRightCondition() {
-        return rightCondition;
-    }
+public class OrCondition extends ParseTree {
+    private ParseTree leftCondition = new AndCondition();
+    private ParseTree rightCondition = null;
+    private TokenType operator = TokenType.OR;
 
     @Override
     public Type getType() {
@@ -30,9 +21,10 @@ public class Condition extends Parsable implements Executable {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.OR)) {
             parser.accept();
-            rightCondition = new AndCondition();
+            rightCondition = new OrCondition();
             rightCondition.parse(parser);
         }
+        normalize(this);
     }
 
     @Override
@@ -47,5 +39,35 @@ public class Condition extends Parsable implements Executable {
             }
         }
         return LiteralFactory.getFalseValue();
+    }
+
+    @Override
+    public ParseTree getLeftParseTree() {
+        return leftCondition;
+    }
+
+    @Override
+    public ParseTree getRightParseTree() {
+        return rightCondition;
+    }
+
+    @Override
+    public void setLeftParseTree(ParseTree parseTree) {
+        this.leftCondition = parseTree;
+    }
+
+    @Override
+    public TokenType getOperator() {
+        return operator;
+    }
+
+    @Override
+    public void setOperator(TokenType operator) {
+        this.operator = operator;
+    }
+
+    @Override
+    public void setRightParseTree(ParseTree parseTree) {
+        this.rightCondition = parseTree;
     }
 }

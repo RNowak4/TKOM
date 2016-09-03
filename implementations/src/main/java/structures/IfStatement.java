@@ -7,16 +7,16 @@ import parser.Parser;
 import utils.TokenType;
 
 public class IfStatement extends Parsable implements Executable {
-    private Condition condition = new Condition();
+    private OrCondition orCondition = new OrCondition();
     private StatementBlock trueBlock = new StatementBlock();
     private StatementBlock elseBlock = null;
 
-    public Condition getCondition() {
-        return condition;
+    public OrCondition getOrCondition() {
+        return orCondition;
     }
 
-    public void setCondition(Condition condition) {
-        this.condition = condition;
+    public void setOrCondition(OrCondition orCondition) {
+        this.orCondition = orCondition;
     }
 
     public StatementBlock getTrueBlock() {
@@ -44,7 +44,7 @@ public class IfStatement extends Parsable implements Executable {
     public void parse(final Parser parser) {
         parser.accept();
         parser.accept(TokenType.PARENTH_OPEN);
-        condition.parse(parser);
+        orCondition.parse(parser);
         parser.accept(TokenType.PARENTH_CLOSE);
         trueBlock.parse(parser);
         if (parser.getNextToken().getTokenType() == TokenType.ELSE) {
@@ -56,7 +56,7 @@ public class IfStatement extends Parsable implements Executable {
 
     @Override
     public Literal execute(Executor executor, Scope scope) {
-        final Literal conditionResult = condition.execute(executor, scope);
+        final Literal conditionResult = orCondition.execute(executor, scope);
         if (conditionResult.isTrue()) {
             return trueBlock.execute(executor, scope);
         } else if (elseBlock != null)

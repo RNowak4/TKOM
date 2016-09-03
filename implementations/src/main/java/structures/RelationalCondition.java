@@ -1,6 +1,5 @@
 package structures;
 
-import executor.Executable;
 import executor.Executor;
 import executor.Scope;
 import parser.Parser;
@@ -8,26 +7,10 @@ import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class RelationalCondition extends Parsable implements Executable {
-    private PrimaryCondition leftCondition = new PrimaryCondition();
-    private PrimaryCondition rightCondition = null;
+public class RelationalCondition extends ParseTree {
+    private ParseTree leftCondition = new PrimaryCondition();
+    private ParseTree rightCondition = null;
     private TokenType relationalOp = TokenType.UNDEFINED;
-
-    public PrimaryCondition getLeftCondition() {
-        return leftCondition;
-    }
-
-    public void setLeftCondition(PrimaryCondition leftCondition) {
-        this.leftCondition = leftCondition;
-    }
-
-    public PrimaryCondition getRightCondition() {
-        return rightCondition;
-    }
-
-    public void setRightCondition(PrimaryCondition rightCondition) {
-        this.rightCondition = rightCondition;
-    }
 
     @Override
     public Type getType() {
@@ -40,21 +23,19 @@ public class RelationalCondition extends Parsable implements Executable {
         if (parser.checkNextTokenType(TokenType.LOWER, TokenType.LOWER_EQUALS, TokenType.GREATER, TokenType.GREATER_EQUALS)) {
             final Token operator = parser.accept();
             relationalOp = operator.getTokenType();
-            rightCondition = new PrimaryCondition();
+            rightCondition = new RelationalCondition();
             rightCondition.parse(parser);
         }
+        normalize(this);
     }
 
     public TokenType getRelationalOp() {
         return relationalOp;
     }
 
-    public void setRelationalOp(TokenType relationalOp) {
-        this.relationalOp = relationalOp;
-    }
-
     @Override
     public Literal execute(Executor executor, Scope scope) {
+//        normalize(this);
         final Literal leftConditionResult = leftCondition.execute(executor, scope);
 
         if (rightCondition == null) {
@@ -110,5 +91,35 @@ public class RelationalCondition extends Parsable implements Executable {
         } else {
             return LiteralFactory.getFalseValue();
         }
+    }
+
+    @Override
+    public ParseTree getLeftParseTree() {
+        return leftCondition;
+    }
+
+    @Override
+    public ParseTree getRightParseTree() {
+        return rightCondition;
+    }
+
+    @Override
+    public void setLeftParseTree(ParseTree parseTree) {
+        this.leftCondition = parseTree;
+    }
+
+    @Override
+    public TokenType getOperator() {
+        return relationalOp;
+    }
+
+    @Override
+    public void setOperator(TokenType operator) {
+        this.relationalOp = operator;
+    }
+
+    @Override
+    public void setRightParseTree(ParseTree parseTree) {
+        this.rightCondition = parseTree;
     }
 }

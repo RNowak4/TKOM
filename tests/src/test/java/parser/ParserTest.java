@@ -116,8 +116,8 @@ public class ParserTest {
         final RelationalCondition condition = new RelationalCondition();
         condition.parse(parser);
 
-        final Variable firstOperand = (Variable) (condition.getLeftCondition()).getOperand();
-        final Variable secondOperand = (Variable) (condition.getRightCondition()).getOperand();
+        final Variable firstOperand = (Variable) ((PrimaryCondition) (condition.getLeftParseTree())).getOperand();
+        final Variable secondOperand = (Variable) ((PrimaryCondition) (condition.getRightParseTree().getLeftParseTree())).getOperand();
 
         Assert.assertEquals("a", firstOperand.getName());
         Assert.assertEquals("b", secondOperand.getName());
@@ -131,8 +131,8 @@ public class ParserTest {
         final RelationalCondition condition = new RelationalCondition();
         condition.parse(parser);
 
-        final PrimaryCondition firstCondition = condition.getLeftCondition();
-        final PrimaryCondition secondCondition = condition.getRightCondition();
+        final PrimaryCondition firstCondition = (PrimaryCondition) condition.getLeftParseTree();
+        final PrimaryCondition secondCondition = (PrimaryCondition) condition.getRightParseTree().getLeftParseTree();
         final Variable firstOperand = (Variable) firstCondition.getOperand();
         final Variable secondOperand = (Variable) secondCondition.getOperand();
 

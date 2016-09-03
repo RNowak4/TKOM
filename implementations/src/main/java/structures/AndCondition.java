@@ -1,31 +1,15 @@
 package structures;
 
-import executor.Executable;
 import executor.Executor;
 import executor.Scope;
 import parser.Parser;
 import utils.LiteralFactory;
 import utils.TokenType;
 
-public class AndCondition extends Parsable implements Executable {
-    private EqualityCondition leftCondition = new EqualityCondition();
-    private EqualityCondition rightCondition;
-
-    public EqualityCondition getLeftCondition() {
-        return leftCondition;
-    }
-
-    public void setLeftCondition(EqualityCondition leftCondition) {
-        this.leftCondition = leftCondition;
-    }
-
-    public EqualityCondition getRightCondition() {
-        return rightCondition;
-    }
-
-    public void setRightCondition(EqualityCondition rightCondition) {
-        this.rightCondition = rightCondition;
-    }
+public class AndCondition extends ParseTree {
+    private ParseTree leftCondition = new EqualityCondition();
+    private ParseTree rightCondition;
+    private TokenType operator = TokenType.AND;
 
     @Override
     public Type getType() {
@@ -37,9 +21,10 @@ public class AndCondition extends Parsable implements Executable {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.AND)) {
             parser.accept();
-            rightCondition = new EqualityCondition();
+            rightCondition = new AndCondition();
             rightCondition.parse(parser);
         }
+        normalize(this);
     }
 
     @Override
@@ -55,5 +40,35 @@ public class AndCondition extends Parsable implements Executable {
             else
                 return LiteralFactory.getFalseValue();
         }
+    }
+
+    @Override
+    public ParseTree getLeftParseTree() {
+        return leftCondition;
+    }
+
+    @Override
+    public ParseTree getRightParseTree() {
+        return rightCondition;
+    }
+
+    @Override
+    public void setLeftParseTree(ParseTree parseTree) {
+        this.leftCondition = parseTree;
+    }
+
+    @Override
+    public TokenType getOperator() {
+        return operator;
+    }
+
+    @Override
+    public void setOperator(TokenType operator) {
+        this.operator = operator;
+    }
+
+    @Override
+    public void setRightParseTree(ParseTree parseTree) {
+        this.rightCondition = parseTree;
     }
 }

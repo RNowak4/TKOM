@@ -1,18 +1,8 @@
 function main() {
-    def y = 1-2j;
-    def a = 5 + j;
-    def b = koty(y,a);
-    def c = 5;
-    sum(c);
-    print(b);
-    c = 5;
-    b = 4;
-    y = silnia(c) * silnia(b);
+    def y = suma();
     print(y);
-    y = 15;
-    a = fib(y);
-    print(a);
-    iter(y);
+    def a = 11;
+    iter(a);
 }
 
 function koty(a,b) {
@@ -64,8 +54,18 @@ function fib(n) {
 }
 
 function iter(n) {
-    while(n > 0) {
+    def c = 0;
+    while(c < 10 && c > 5 || !(n <= 0)) {
         print(n);
         n = n - 1;
+        c = c + 1;
     }
+}
+
+function suma() {
+    def a = 0;
+    def b = 2;
+    def c = 2;
+    def d = 2;
+    return a - (b + b * b);
 }

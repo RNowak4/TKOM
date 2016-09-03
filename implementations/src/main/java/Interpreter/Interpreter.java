@@ -1,4 +1,4 @@
-package Interpreter;
+package interpreter;
 
 import executor.Executor;
 import lexer.Lexer;

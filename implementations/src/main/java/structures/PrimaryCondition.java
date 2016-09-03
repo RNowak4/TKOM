@@ -8,7 +8,7 @@ import utils.LiteralFactory;
 import utils.Token;
 import utils.TokenType;
 
-public class PrimaryCondition extends Parsable implements Executable {
+public class PrimaryCondition extends ParseTree {
     private Parsable operand;
     boolean negated;
 
@@ -43,7 +43,7 @@ public class PrimaryCondition extends Parsable implements Executable {
         switch (token.getTokenType()) {
             case PARENTH_OPEN: {
                 parser.accept();
-                operand = new Condition();
+                operand = new OrCondition();
                 operand.parse(parser);
                 parser.accept(TokenType.PARENTH_CLOSE);
             }
@@ -81,6 +81,36 @@ public class PrimaryCondition extends Parsable implements Executable {
         else if (negated && result.isTrue())
             return LiteralFactory.getFalseValue();
         else
-            return result;
+            return LiteralFactory.getTrueValue();
+    }
+
+    @Override
+    public ParseTree getLeftParseTree() {
+        return null;
+    }
+
+    @Override
+    public ParseTree getRightParseTree() {
+        return null;
+    }
+
+    @Override
+    public void setLeftParseTree(ParseTree parseTree) {
+        throw new RuntimeException("Bad invocation!");
+    }
+
+    @Override
+    public TokenType getOperator() {
+        return TokenType.UNDEFINED;
+    }
+
+    @Override
+    public void setOperator(TokenType operator) {
+        throw new RuntimeException("Bad invocation!");
+    }
+
+    @Override
+    public void setRightParseTree(ParseTree parseTree) {
+        throw new RuntimeException("Bad invocation!");
     }
 }

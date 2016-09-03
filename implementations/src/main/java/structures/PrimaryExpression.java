@@ -7,7 +7,7 @@ import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class PrimaryExpression extends Parsable {
+public class PrimaryExpression extends ParseTree {
     private Parsable expression;
 
     public Parsable getExpression() {
@@ -55,5 +55,30 @@ public class PrimaryExpression extends Parsable {
         final Executable executable = (Executable) expression;
 
         return executable.execute(executor, scope);
+    }
+
+    public ParseTree getLeftParseTree() {
+        return null;
+    }
+
+    public ParseTree getRightParseTree() {
+        return null;
+    }
+
+    public void setLeftParseTree(ParseTree parseTree) {
+    }
+
+    @Override
+    public TokenType getOperator() {
+        return TokenType.UNDEFINED;
+    }
+
+    @Override
+    public void setOperator(TokenType operator) {
+        throw new RuntimeException("BAD");
+    }
+
+    public void setRightParseTree(ParseTree parseTree) {
+        throw new RuntimeException("BAD");
     }
 }
