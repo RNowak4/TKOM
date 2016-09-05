@@ -14,11 +14,6 @@ public class RelationalCondition extends Condition {
     }
 
     @Override
-    public Type getType() {
-        return Type.RelationalCondition;
-    }
-
-    @Override
     public void parse(final Parser parser) {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.LOWER, TokenType.LOWER_EQUALS, TokenType.GREATER, TokenType.GREATER_EQUALS)) {

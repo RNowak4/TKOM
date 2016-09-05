@@ -5,9 +5,6 @@ import structures.*;
 import utils.Token;
 import utils.TokenType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Parser {
@@ -25,15 +22,7 @@ public class Parser {
 
     public Program parse() {
         final Program program = new Program();
-
-        while (!checkNextTokenType(TokenType.END)) {
-            Function function = new Function();
-            function.parse(this);
-            if (function.isEmpty())
-                break;
-
-            program.addFunction(function);
-        }
+        program.parse(this);
 
         return program;
     }
@@ -128,32 +117,12 @@ public class Parser {
         return Stream.of(tokenTypes).anyMatch(t -> t == getNextToken().getTokenType());
     }
 
-    public List<String> parseParameters() {
-        log.trace("Started parsing parameters.");
-        final List<String> parameters = new ArrayList<>();
-
-        accept(TokenType.PARENTH_OPEN);
-        Token token = accept(TokenType.PARENTH_CLOSE, TokenType.ID);
-        if (token.getTokenType() != TokenType.PARENTH_CLOSE) {
-            parameters.add(token.getTokenString());
-            while (accept(TokenType.COMMA, TokenType.PARENTH_CLOSE).getTokenType() != TokenType.PARENTH_CLOSE) {
-                token = accept(TokenType.ID);
-                parameters.add(token.getTokenString());
-            }
-        }
-        log.trace("Successfully parsed " + parameters.size() + " parameters.");
-
-        return parameters;
-    }
-
-    public Parsable parseFunctionCallOrVariable() {
+    public ParseElement parseFunctionCallOrVariable() {
         final String name = accept(TokenType.ID).getTokenString();
         if (checkNextTokenType(TokenType.PARENTH_OPEN)) {
             final FunctionCall functionCall = new FunctionCall();
-            final List<Parsable> arguments = parseParameters().stream()
-                    .map(Variable::new).collect(Collectors.toList());
             functionCall.setName(name);
-            functionCall.setArguments(arguments);
+            functionCall.parse(this);
 
             return functionCall;
         } else if (checkNextTokenType(TokenType.ASSIGN)) {
@@ -161,14 +130,15 @@ public class Parser {
             assignStatement.setVariable(new Variable(name));
             accept();
             assignStatement.setValue(parseAssignable());
+
             return assignStatement;
         } else
             return new Variable(name);
     }
 
-    public Parsable parseAssignable() {
+    public ParseElement parseAssignable() {
         if (checkNextTokenType(TokenType.RE_NUMBER, TokenType.IM_NUMBER, TokenType.SUB, TokenType.ADD, TokenType.ID)) {
-            final AdditiveExpression expression = new AdditiveExpression();
+            final Expression expression = new AdditiveExpression();
             expression.parse(this);
             return expression;
         } else

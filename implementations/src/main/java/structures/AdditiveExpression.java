@@ -13,11 +13,6 @@ public class AdditiveExpression extends Expression {
     }
 
     @Override
-    public Type getType() {
-        return Type.Expression;
-    }
-
-    @Override
     public void parse(final Parser parser) {
         leftExpression.parse(parser);
         if (parser.checkNextTokenType(TokenType.ADD, TokenType.SUB)) {

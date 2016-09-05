@@ -10,20 +10,15 @@ import utils.TokenType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatementBlock extends Parsable implements Executable {
-    private List<Parsable> instructions = new ArrayList<>();
+public class StatementBlock extends ParseElement implements Executable {
+    private List<ParseElement> instructions = new ArrayList<>();
 
-    public List<Parsable> getInstructions() {
+    public List<ParseElement> getInstructions() {
         return instructions;
     }
 
-    public void addInstruction(final Parsable instruction) {
+    public void addInstruction(final ParseElement instruction) {
         instructions.add(instruction);
-    }
-
-    @Override
-    public Type getType() {
-        return Type.StatementBlock;
     }
 
     @Override
@@ -90,7 +85,7 @@ public class StatementBlock extends Parsable implements Executable {
 
     @Override
     public Literal execute(Executor executor, Scope scope) {
-        for (Parsable instruction : instructions) {
+        for (ParseElement instruction : instructions) {
             final Executable executable = (Executable) instruction;
             final Literal result = executable.execute(executor, scope);
             if (scope.isReturn()) {

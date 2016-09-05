@@ -6,30 +6,21 @@ import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class PrintStatement extends Parsable implements Executable {
-    private List<Variable> arguments;
-
-    @Override
-    public Type getType() {
-        return Type.PrintStatement;
-    }
+public class PrintStatement extends ParseElement implements Executable {
+    private Parameters parameters = new Parameters();
 
     @Override
     public void parse(Parser parser) {
         parser.accept();
         if (parser.checkNextTokenType(TokenType.PARENTH_OPEN)) {
-            arguments = parser.parseParameters().stream()
-                    .map(Variable::new).collect(Collectors.toList());
+            parameters.parse(parser);
         } else
             parser.accept(TokenType.PARENTH_OPEN);
     }
 
     @Override
     public Literal execute(Executor executor, Scope scope) {
-        for (Variable argument : arguments) {
+        for (Variable argument : parameters.getAll()) {
             System.out.println(scope.getValue(argument.getName()));
         }
 

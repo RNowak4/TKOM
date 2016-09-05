@@ -6,7 +6,7 @@ import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class WhileStatement extends Parsable implements Executable {
+public class WhileStatement extends ParseElement implements Executable {
     private OrCondition orCondition = new OrCondition();
     private StatementBlock statementBlock = new StatementBlock();
 
@@ -27,11 +27,6 @@ public class WhileStatement extends Parsable implements Executable {
 
     public void setStatementBlock(StatementBlock statementBlock) {
         this.statementBlock = statementBlock;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.WhileStatement;
     }
 
     @Override

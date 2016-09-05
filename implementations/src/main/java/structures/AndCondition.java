@@ -14,11 +14,6 @@ public class AndCondition extends Condition {
     }
 
     @Override
-    public Type getType() {
-        return Type.AndCondition;
-    }
-
-    @Override
     public void parse(final Parser parser) {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.AND)) {

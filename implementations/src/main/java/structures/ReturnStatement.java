@@ -6,27 +6,22 @@ import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class ReturnStatement extends Parsable implements Executable {
-    private Parsable returnVal;
+public class ReturnStatement extends ParseElement implements Executable {
+    private ParseElement returnVal;
 
     public ReturnStatement() {
     }
 
-    public ReturnStatement(Parsable returnVal) {
+    public ReturnStatement(ParseElement returnVal) {
         this.returnVal = returnVal;
     }
 
-    public Parsable getReturnVal() {
+    public ParseElement getReturnVal() {
         return returnVal;
     }
 
-    public void setReturnVal(Parsable returnVal) {
+    public void setReturnVal(ParseElement returnVal) {
         this.returnVal = returnVal;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.ReturnStatement;
     }
 
     @Override

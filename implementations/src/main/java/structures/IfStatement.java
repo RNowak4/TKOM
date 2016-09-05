@@ -6,7 +6,7 @@ import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class IfStatement extends Parsable implements Executable {
+public class IfStatement extends ParseElement implements Executable {
     private OrCondition orCondition = new OrCondition();
     private StatementBlock trueBlock = new StatementBlock();
     private StatementBlock elseBlock = null;
@@ -33,11 +33,6 @@ public class IfStatement extends Parsable implements Executable {
 
     public void setElseBlock(StatementBlock elseBlock) {
         this.elseBlock = elseBlock;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.IfStatement;
     }
 
     @Override

@@ -3,7 +3,7 @@ package structures;
 import executor.Executable;
 import utils.TokenType;
 
-public abstract class ParseTree extends Parsable implements Executable {
+public abstract class ParseTree extends ParseElement implements Executable {
     protected abstract ParseTree getLeftParseTree();
 
     protected abstract ParseTree getRightParseTree();

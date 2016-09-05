@@ -5,11 +5,11 @@ import executor.Executor;
 import executor.Scope;
 import parser.Parser;
 
-public class AssignStatement extends Parsable implements Executable {
+public class AssignStatement extends ParseElement implements Executable {
     private Variable variable;
-    private Parsable value;
+    private ParseElement value;
 
-    public AssignStatement(Variable variable, Parsable value) {
+    public AssignStatement(Variable variable, ParseElement value) {
         this.variable = variable;
         this.value = value;
     }
@@ -25,17 +25,12 @@ public class AssignStatement extends Parsable implements Executable {
         this.variable = variable;
     }
 
-    public Parsable getValue() {
+    public ParseElement getValue() {
         return value;
     }
 
-    public void setValue(Parsable value) {
+    public void setValue(ParseElement value) {
         this.value = value;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.Assignment;
     }
 
     @Override

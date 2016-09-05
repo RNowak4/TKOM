@@ -8,12 +8,7 @@ import utils.Token;
 import utils.TokenType;
 
 public class PrimaryExpression extends Expression {
-    private Parsable expression;
-
-    @Override
-    public Type getType() {
-        return Type.PrimaryExpression;
-    }
+    private ParseElement expression;
 
     @Override
     public void parse(final Parser parser) {

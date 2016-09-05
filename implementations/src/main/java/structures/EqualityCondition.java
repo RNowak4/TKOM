@@ -15,11 +15,6 @@ public class EqualityCondition extends Condition {
     }
 
     @Override
-    public Type getType() {
-        return Type.EqualityCondition;
-    }
-
-    @Override
     public void parse(final Parser parser) {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.EQUALS, TokenType.NOT_EQUALS)) {

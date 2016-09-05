@@ -13,11 +13,6 @@ public class MultiplicativeExpression extends Expression {
     }
 
     @Override
-    public Type getType() {
-        return Type.MultiplicativeExpression;
-    }
-
-    @Override
     public void parse(final Parser parser) {
         leftExpression.parse(parser);
         if (parser.checkNextTokenType(TokenType.MUL, TokenType.DIV, TokenType.MODULO)) {

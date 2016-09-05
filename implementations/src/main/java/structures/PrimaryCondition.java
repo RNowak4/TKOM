@@ -9,10 +9,10 @@ import utils.Token;
 import utils.TokenType;
 
 public class PrimaryCondition extends Condition {
-    private Parsable operand;
+    private ParseElement operand;
     boolean negated;
 
-    public Parsable getOperand() {
+    public ParseElement getOperand() {
         return operand;
     }
 
@@ -22,11 +22,6 @@ public class PrimaryCondition extends Condition {
 
     public void setNegated(boolean negated) {
         this.negated = negated;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.PrimaryCondition;
     }
 
     @Override

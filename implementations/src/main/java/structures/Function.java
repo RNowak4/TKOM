@@ -5,21 +5,12 @@ import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Function extends Parsable {
+public class Function extends ParseElement {
     private String name;
     private StatementBlock statementBlock = new StatementBlock();
-    private List<String> parameters = new ArrayList<>();
-
-    public Function() {
-    }
-
-    public Function(String name, StatementBlock statementBlock) {
-        this.name = name;
-        this.statementBlock = statementBlock;
-    }
+    private Arguments parameters = new Arguments();
 
     public boolean isEmpty() {
         return name == null;
@@ -33,23 +24,6 @@ public class Function extends Parsable {
         this.name = name;
     }
 
-    public StatementBlock getStatementBlock() {
-        return statementBlock;
-    }
-
-    public void setParameters(List<String> parameters) {
-        this.parameters = parameters;
-    }
-
-    public void setStatementBlock(StatementBlock statementBlock) {
-        this.statementBlock = statementBlock;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.Function;
-    }
-
     @Override
     public void parse(final Parser parser) {
         log.trace("Started parsing function.");
@@ -57,7 +31,7 @@ public class Function extends Parsable {
             return;
 
         name = parser.accept(TokenType.ID).getTokenString();
-        parameters = parser.parseParameters();
+        parameters.parse(parser);
         statementBlock.parse(parser);
         log.trace("Successfully parsed function " + this);
     }
@@ -68,7 +42,7 @@ public class Function extends Parsable {
                 .append(name)
                 .append("(");
 
-        parameters.stream().forEach(param -> {
+        parameters.getAll().stream().forEach(param -> {
             sb.append(param);
             sb.append(",");
         });
@@ -79,7 +53,7 @@ public class Function extends Parsable {
     }
 
     public Literal execute(Executor executor, Scope scope, List<Literal> args) {
-        if (args.size() != parameters.size())
+        if (args.size() != parameters.getAll().size())
             throw new RuntimeException("Bad nubmer of arguments in function call!");
 
         final Scope functionScope = scope.getCopy();

@@ -7,7 +7,7 @@ import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class Variable extends Parsable implements Executable {
+public class Variable extends ParseElement implements Executable {
     private Literal value;
     private String name;
 
@@ -32,11 +32,6 @@ public class Variable extends Parsable implements Executable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.Variable;
     }
 
     @Override

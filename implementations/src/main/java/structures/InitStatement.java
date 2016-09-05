@@ -6,9 +6,9 @@ import executor.Scope;
 import parser.Parser;
 import utils.TokenType;
 
-public class InitStatement extends Parsable implements Executable {
+public class InitStatement extends ParseElement implements Executable {
     private Variable variable = new Variable();
-    private Parsable assignment;
+    private ParseElement assignment;
 
     public Variable getVariable() {
         return variable;
@@ -18,17 +18,12 @@ public class InitStatement extends Parsable implements Executable {
         this.variable = variable;
     }
 
-    public Parsable getAssignment() {
+    public ParseElement getAssignment() {
         return assignment;
     }
 
-    public void setAssignment(Parsable assignment) {
+    public void setAssignment(ParseElement assignment) {
         this.assignment = assignment;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.InitStatement;
     }
 
     @Override

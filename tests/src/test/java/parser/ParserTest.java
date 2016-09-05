@@ -31,8 +31,9 @@ public class ParserTest {
         final String text = "()";
         final Parser parser = getParser(text);
 
-        List<String> parameters = parser.parseParameters();
-        Assert.assertEquals(0, parameters.size());
+        final Arguments arguments = new Arguments();
+        arguments.parse(parser);
+        Assert.assertEquals(0, arguments.getAll().size());
     }
 
     @Test
@@ -40,9 +41,10 @@ public class ParserTest {
         final String text = "(a)";
         final Parser parser = getParser(text);
 
-        List<String> parameters = parser.parseParameters();
+        final Arguments arguments = new Arguments();
+        arguments.parse(parser);
         List<String> goodParams = Stream.of(text.substring(1, text.length() - 1).split(",")).collect(Collectors.toList());
-        Assert.assertEquals(goodParams, parameters);
+        Assert.assertEquals(goodParams, arguments.getAll());
     }
 
     @Test
@@ -50,9 +52,10 @@ public class ParserTest {
         final String text = "(a,b,c,d)";
         final Parser parser = getParser(text);
 
-        List<String> parameters = parser.parseParameters();
+        final Arguments arguments = new Arguments();
+        arguments.parse(parser);
         List<String> goodParams = Stream.of(text.substring(1, text.length() - 1).split(",")).collect(Collectors.toList());
-        Assert.assertEquals(goodParams, parameters);
+        Assert.assertEquals(goodParams, arguments.getAll());
     }
 
     @Test

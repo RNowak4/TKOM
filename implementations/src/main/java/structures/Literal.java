@@ -7,7 +7,7 @@ import parser.Parser;
 import utils.Token;
 import utils.TokenType;
 
-public class Literal extends Parsable implements Executable {
+public class Literal extends ParseElement implements Executable {
     private int reValue;
     private int imValue;
 
@@ -33,11 +33,6 @@ public class Literal extends Parsable implements Executable {
 
     public void setImValue(int imValue) {
         this.imValue = imValue;
-    }
-
-    @Override
-    public Type getType() {
-        return Type.Literal;
     }
 
     @Override

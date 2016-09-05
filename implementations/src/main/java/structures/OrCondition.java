@@ -12,11 +12,6 @@ public class OrCondition extends ParseTree {
     private TokenType operator = TokenType.OR;
 
     @Override
-    public Type getType() {
-        return Type.Condition;
-    }
-
-    @Override
     public void parse(final Parser parser) {
         leftCondition.parse(parser);
         if (parser.checkNextTokenType(TokenType.OR)) {
