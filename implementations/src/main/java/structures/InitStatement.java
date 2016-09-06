@@ -4,6 +4,7 @@ import executor.Executable;
 import executor.Executor;
 import executor.Scope;
 import parser.Parser;
+import utils.LiteralFactory;
 import utils.TokenType;
 
 public class InitStatement extends ParseElement implements Executable {
@@ -18,14 +19,6 @@ public class InitStatement extends ParseElement implements Executable {
         this.variable = variable;
     }
 
-    public ParseElement getAssignment() {
-        return assignment;
-    }
-
-    public void setAssignment(ParseElement assignment) {
-        this.assignment = assignment;
-    }
-
     @Override
     public void parse(final Parser parser) {
         parser.accept(TokenType.DEF);
@@ -38,7 +31,11 @@ public class InitStatement extends ParseElement implements Executable {
 
     @Override
     public Literal execute(Executor executor, Scope scope) {
-        final Literal newVal = ((Executable) assignment).execute(executor, scope);
+        Literal newVal;
+        if (assignment == null)
+            newVal = LiteralFactory.getEmptyLiteral();
+        else
+            newVal = ((Executable) assignment).execute(executor, scope);
 
         variable.setValue(newVal);
         scope.addVariable(variable);

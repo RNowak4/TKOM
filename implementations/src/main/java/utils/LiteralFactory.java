@@ -11,4 +11,8 @@ public class LiteralFactory {
     public static Literal getFalseValue() {
         return new Literal(0, 0);
     }
+
+    public static Literal getEmptyLiteral() {
+        return new Literal(0, 0);
+    }
 }

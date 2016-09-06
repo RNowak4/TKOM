@@ -43,7 +43,8 @@ public class AssignStatement extends ParseElement implements Executable {
         final Literal newVal = ((Executable) value).execute(executor, scope);
 
         variable.setValue(newVal);
-        scope.addVariable(variable);
+//        scope.addVariable(variable);
+        scope.setIfExist(variable);
 
         return newVal;
     }

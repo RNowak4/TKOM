@@ -52,4 +52,12 @@ public class Scope {
     public void setReturn(boolean aReturn) {
         isReturn = aReturn;
     }
+
+    public void setIfExist(Variable variable) {
+        final Literal found = variables.get(variable.getName());
+        if (found == null)
+            throw new RuntimeException("No such variable declared in the scope!");
+        else
+            variables.put(variable.getName(), variable.getValue());
+    }
 }

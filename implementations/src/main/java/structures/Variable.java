@@ -18,6 +18,10 @@ public class Variable extends ParseElement implements Executable {
         this.name = name;
     }
 
+    public Variable(Literal value) {
+        this.value = value;
+    }
+
     public Literal getValue() {
         return value;
     }

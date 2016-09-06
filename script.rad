@@ -1,22 +1,7 @@
 function main() {
     def y = suma();
     print(y);
-    def a = 11;
-    def n = 2;
-    a = pow(a,n);
-    print(a);
-    a = 11;
-    iter2(a);
-}
-
-function koty(a,b) {
-    def x = a+b;
-    if(a>b) {
-        x=1;
-    } else {
-        x=2*(j+j+(j*j))+2;
-    }
-    return x;
+    iter2(11);
 }
 
 function sum(a) {
@@ -31,27 +16,22 @@ function sum(a) {
 
 function silnia(n) {
     if(n <= 1) {
-        return 1;
+        return n;
     } else {
         def x = n-1;
-        def z = n * silnia(x);
-        return z;
+        return n * silnia(x);
     }
 }
 
 function fib(n) {
     if(n <= 1) {
         return n;
-    } else {
-        if(n < 1) {
-            return;
-        }
-        else {
-            def x = n - 1;
-            def y = n - 2;
-            def z = fib(x) + fib(y);
-            return z;
-        }
+    }
+    else {
+        def x = n - 1;
+        def y = n - 2;
+        def z = fib(x) + fib(y);
+        return z;
     }
 }
 
@@ -69,7 +49,7 @@ function suma() {
     def b = 2;
     def c = 2;
     def d = 2;
-    return a - b + b;
+    return a - (b + b) * d;
 }
 
 function pow(a,n) {

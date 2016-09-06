@@ -1,7 +1,6 @@
 package structures;
 
 import parser.Parser;
-import utils.Token;
 import utils.TokenType;
 
 import java.util.ArrayList;
@@ -13,15 +12,26 @@ public class Parameters extends ParseElement {
     @Override
     public void parse(Parser parser) {
         parser.accept(TokenType.PARENTH_OPEN);
-        Token token = parser.accept(TokenType.PARENTH_CLOSE, TokenType.ID);
-        if (token.getTokenType() != TokenType.PARENTH_CLOSE) {
-            Variable var = new Variable(token.getTokenString());
-            parameters.add(var);
+        parser.checkAccept(TokenType.PARENTH_CLOSE, TokenType.ID, TokenType.RE_NUMBER, TokenType.IM_NUMBER,
+                TokenType.ADD, TokenType.SUB);
+        if (!parser.checkNextTokenType(TokenType.PARENTH_CLOSE)) {
+            parseNextParam(parser);
             while (parser.accept(TokenType.COMMA, TokenType.PARENTH_CLOSE).getTokenType() != TokenType.PARENTH_CLOSE) {
-                token = parser.accept(TokenType.ID);
-                var = new Variable(token.getTokenString());
-                parameters.add(var);
+                parseNextParam(parser);
             }
+        } else
+            parser.accept(TokenType.PARENTH_CLOSE);
+    }
+
+    private void parseNextParam(final Parser parser) {
+        if (parser.checkNextTokenType(TokenType.ID)) {
+            final Variable var = new Variable();
+            var.parse(parser);
+            parameters.add(var);
+        } else {
+            final Literal lit = new Literal();
+            lit.parse(parser);
+            parameters.add(new Variable(lit));
         }
     }
 

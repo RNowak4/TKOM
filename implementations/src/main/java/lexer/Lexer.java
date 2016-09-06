@@ -23,6 +23,7 @@ public class Lexer {
             return 0;
         else
             try {
+                ++charCounter;
                 return (char) inputStream.read();
             } catch (IOException e) {
                 e.printStackTrace();
